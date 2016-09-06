@@ -1,0 +1,6 @@
+F:\Anticaptcha_example\obj\Debug\Anticaptcha_example.csprojResolveAssemblyReference.cache
+F:\Anticaptcha_example\bin\Debug\Anticaptcha_example.exe
+F:\Anticaptcha_example\bin\Debug\Anticaptcha_example.pdb
+F:\Anticaptcha_example\bin\Debug\Newtonsoft.Json.dll
+F:\Anticaptcha_example\obj\Debug\Anticaptcha_example.exe
+F:\Anticaptcha_example\obj\Debug\Anticaptcha_example.pdb
