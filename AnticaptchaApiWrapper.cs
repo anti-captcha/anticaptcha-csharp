@@ -48,8 +48,8 @@ namespace Anticaptcha_example
         }
 
         public static AnticaptchaTask CreateNoCaptchaTask(string host, string clientKey, string websiteUrl,
-            string websiteKey, ProxyType proxyType,
-            string proxyAddress, int proxyPort, string proxyLogin, string proxyPassword, string userAgent)
+            string websiteKey, ProxyType proxyType, string proxyAddress, int proxyPort, string proxyLogin,
+            string proxyPassword, string userAgent, string websiteSToken = "")
         {
             if (string.IsNullOrEmpty(proxyAddress) || !CheckHost(proxyAddress))
             {
@@ -84,6 +84,7 @@ namespace Anticaptcha_example
             jObj["task"]["type"] = "NoCaptchaTask";
             jObj["task"]["websiteURL"] = websiteUrl;
             jObj["task"]["websiteKey"] = websiteKey;
+            jObj["task"]["websiteSToken"] = websiteSToken;
             jObj["task"]["proxyType"] = proxyType.ToString();
             jObj["task"]["proxyAddress"] = proxyAddress;
             jObj["task"]["proxyPort"] = proxyPort;
