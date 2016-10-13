@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Net.NetworkInformation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example
 {
@@ -10,33 +16,85 @@ namespace Anticaptcha_example
             http
         }
 
+        public static Dictionary<string, bool> HostsChecked = new Dictionary<string, bool>();
+
+        public static bool CheckHost(string host)
+        {
+            if (!HostsChecked.ContainsKey(host))
+            {
+                HostsChecked[host] = Ping(host);
+            }
+
+            return HostsChecked[host];
+        }
+
         private static dynamic JsonPostRequest(string host, string methodName, string postData)
         {
             return HttpHelper.Post(new Uri("http://" + host + "/" + methodName), postData);
+        }
+
+        public static bool Ping(string host)
+        {
+            try
+            {
+                new Ping().Send(host, 1000);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static AnticaptchaTask CreateNoCaptchaTask(string host, string clientKey, string websiteUrl,
             string websiteKey, ProxyType proxyType,
             string proxyAddress, int proxyPort, string proxyLogin, string proxyPassword, string userAgent)
         {
-            var json = "{\n" +
-                       "  \"clientKey\": \"" + clientKey + "\",\n" +
-                       "  \"task\": {\n" +
-                       "    \"type\": \"NoCaptchaTask\",\n" +
-                       "    \"websiteURL\": \"" + websiteUrl + "\",\n" +
-                       "    \"websiteKey\": \"" + websiteKey + "\",\n" +
-                       "    \"proxyType\": \"" + proxyType + "\",\n" +
-                       "    \"proxyAddress\": \"" + proxyAddress + "\",\n" +
-                       "    \"proxyPort\": " + proxyPort + ",\n" +
-                       "    \"proxyLogin\": \"" + proxyLogin + "\",\n" +
-                       "    \"proxyPassword\": \"" + proxyPassword + "\",\n" +
-                       "    \"userAgent\": \"" + userAgent + "\"\n" +
-                       "  }\n" +
-                       "}";
+            if (string.IsNullOrEmpty(proxyAddress) || !CheckHost(proxyAddress))
+            {
+                throw new Exception("Proxy address is incorrect!");
+            }
+
+            if (proxyPort < 1 || proxyPort > 65535)
+            {
+                throw new Exception("Proxy port is incorrect!");
+            }
+
+            if (string.IsNullOrEmpty(userAgent))
+            {
+                throw new Exception("User-Agent is incorrect!");
+            }
+
+            if (string.IsNullOrEmpty(websiteUrl) || !websiteUrl.Contains(".") || !websiteUrl.Contains("/") ||
+                !websiteUrl.Contains("http"))
+            {
+                throw new Exception("Website URL is incorrect!");
+            }
+
+            if (string.IsNullOrEmpty(websiteKey))
+            {
+                throw new Exception("Recaptcha Website Key is incorrect!");
+            }
+
+            var jObj = new JObject();
+
+            jObj["clientKey"] = clientKey;
+            jObj["task"] = new JObject();
+            jObj["task"]["type"] = "NoCaptchaTask";
+            jObj["task"]["websiteURL"] = websiteUrl;
+            jObj["task"]["websiteKey"] = websiteKey;
+            jObj["task"]["proxyType"] = proxyType.ToString();
+            jObj["task"]["proxyAddress"] = proxyAddress;
+            jObj["task"]["proxyPort"] = proxyPort;
+            jObj["task"]["proxyLogin"] = proxyLogin;
+            jObj["task"]["proxyPassword"] = proxyPassword;
+            jObj["task"]["userAgent"] = userAgent;
 
             try
             {
-                var resultJson = JsonPostRequest(host, "createTask", json);
+                var resultJson = JsonPostRequest(host, "createTask",
+                    JsonConvert.SerializeObject(jObj, Formatting.Indented));
 
                 int? taskId = null;
                 int? errorId = null;
@@ -94,27 +152,104 @@ namespace Anticaptcha_example
             return null;
         }
 
-        public static AnticaptchaTask CreateImageToTextTask(string host, string clientKey, string body,
+        private static string ImagePathToBase64String(string path)
+        {
+            try
+            {
+                using (var image = Image.FromFile(path))
+                {
+                    using (var m = new MemoryStream())
+                    {
+                        image.Save(m, image.RawFormat);
+                        var imageBytes = m.ToArray();
+
+                        // Convert byte[] to Base64 String
+                        var base64String = Convert.ToBase64String(imageBytes);
+
+                        return base64String;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Creates "image to text" task and sends it to anti-captcha.com
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="clientKey"></param>
+        /// <param name="pathToImageOrBase64Body">You can set just a path to your image in the filesystem or a base64-encoded image</param>
+        /// <param name="phrase"></param>
+        /// <param name="_case"></param>
+        /// <param name="numeric"></param>
+        /// <param name="math"></param>
+        /// <param name="minLength"></param>
+        /// <param name="maxLength"></param>
+        /// <returns>AnticaptchaTask with taskId or error information</returns>
+        public static AnticaptchaTask CreateImageToTextTask(string host, string clientKey,
+            string pathToImageOrBase64Body,
             bool? phrase = null, bool? _case = null, int? numeric = null,
             bool? math = null, int? minLength = null, int? maxLength = null)
         {
-            var json = "{\n" +
-                       "  \"clientKey\": \"" + clientKey + "\",\n" +
-                       "  \"task\": {\n" +
-                       "    \"type\": \"ImageToTextTask\",\n" +
-                       (phrase != null ? "    \"phrase\": \"" + phrase + "\",\n" : "") +
-                       (_case != null ? "    \"case\": \"" + _case + "\",\n" : "") +
-                       (numeric != null ? "    \"numeric\": \"" + numeric + "\",\n" : "") +
-                       (math != null ? "    \"math\": \"" + math + "\",\n" : "") +
-                       (minLength != null ? "    \"minLength\": " + minLength + ",\n" : "") +
-                       (maxLength != null ? "    \"maxLength\": \"" + maxLength + "\",\n" : "") +
-                       "    \"body\": \"" + body + "\"\n" +
-                       "  }\n" +
-                       "}";
+            try
+            {
+                if (File.Exists(pathToImageOrBase64Body))
+                {
+                    pathToImageOrBase64Body = ImagePathToBase64String(pathToImageOrBase64Body);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            var jObj = new JObject();
+
+            jObj["clientKey"] = clientKey;
+            jObj["task"] = new JObject();
+            jObj["task"]["type"] = "ImageToTextTask";
+            jObj["task"]["body"] = pathToImageOrBase64Body.Replace("\r", "").Replace("\n", "").Trim();
+
+            if (phrase != null)
+            {
+                jObj["task"]["phrase"] = phrase;
+            }
+
+            if (_case != null)
+            {
+                jObj["task"]["case"] = _case;
+            }
+
+            if (numeric != null)
+            {
+                jObj["task"]["numeric"] = numeric;
+            }
+
+            if (math != null)
+            {
+                jObj["task"]["math"] = math;
+            }
+
+            if (minLength != null)
+            {
+                jObj["task"]["minLength"] = minLength;
+            }
+
+            if (maxLength != null)
+            {
+                jObj["task"]["maxLength"] = maxLength;
+            }
 
             try
             {
-                var resultJson = JsonPostRequest(host, "createTask", json);
+                var resultJson = JsonPostRequest(
+                    host,
+                    "createTask",
+                    JsonConvert.SerializeObject(jObj, Formatting.Indented)
+                    );
 
                 int? taskId = null;
                 int? errorId = null;
@@ -174,14 +309,15 @@ namespace Anticaptcha_example
 
         public static AnticaptchaResult GetTaskResult(string host, string clientKey, AnticaptchaTask task)
         {
-            var json = "{\n" +
-                       "  \"clientKey\": \"" + clientKey + "\",\n" +
-                       "  \"taskId\": " + task.GetTaskId() + "\n" +
-                       "}";
+            var jObj = new JObject();
+
+            jObj["clientKey"] = clientKey;
+            jObj["taskId"] = task.GetTaskId();
 
             try
             {
-                dynamic resultJson = JsonPostRequest(host, "getTaskResult", json);
+                dynamic resultJson = JsonPostRequest(host, "getTaskResult",
+                    JsonConvert.SerializeObject(jObj, Formatting.Indented));
 
                 var status = AnticaptchaResult.Status.unknown;
 
