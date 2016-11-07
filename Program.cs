@@ -23,6 +23,12 @@ namespace Anticaptcha_example
             Console.WriteLine();
             Console.WriteLine();
 
+            NoCaptchaProxylessTest();
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+
             ImageToTextTest();
 
             // Exit
@@ -60,6 +66,35 @@ namespace Anticaptcha_example
             catch (Exception e)
             {
                 Console.WriteLine("NoCaptcha task failed with following error: " + e.Message);
+            }
+        }
+
+        private static void NoCaptchaProxylessTest()
+        {
+            try
+            {
+                var task = AnticaptchaApiWrapper.CreateNoCaptchaTaskProxyless(
+                    Host,
+                    ClientKey,
+                    "http://http.myjino.ru/recaptcha/test-get.php",
+                    "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16",
+                    UserAgent
+                    );
+
+                if (task.GetErrorDescription() != null && task.GetErrorDescription().Length > 0)
+                {
+                    Console.WriteLine("Unfortunately we got the following error from the API: " +
+                                      task.GetErrorDescription());
+                }
+
+                Console.WriteLine("Task ID is " + task.GetTaskId() +
+                                  ". NoCaptcha (proxyless) task is sent, will wait for the result.");
+                Thread.Sleep(2000);
+                ProcessTask(task);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("NoCaptcha task (proxyless) failed with following error: " + e.Message);
             }
         }
 

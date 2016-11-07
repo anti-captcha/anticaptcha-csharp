@@ -47,16 +47,55 @@ namespace Anticaptcha_example
             }
         }
 
+        public static AnticaptchaTask CreateNoCaptchaTaskProxyless(string host, string clientKey, string websiteUrl,
+            string websiteKey, string userAgent, string websiteSToken = "")
+        {
+            return CreateNoCaptchaTask(
+                "NoCaptchaTaskProxyless",
+                host,
+                clientKey,
+                websiteUrl,
+                websiteKey,
+                null,
+                null,
+                null,
+                null,
+                null,
+                userAgent,
+                websiteSToken
+                );
+        }
+
         public static AnticaptchaTask CreateNoCaptchaTask(string host, string clientKey, string websiteUrl,
             string websiteKey, ProxyType proxyType, string proxyAddress, int proxyPort, string proxyLogin,
             string proxyPassword, string userAgent, string websiteSToken = "")
         {
-            if (string.IsNullOrEmpty(proxyAddress) || !CheckHost(proxyAddress))
+            return CreateNoCaptchaTask(
+                "NoCaptchaTask",
+                host,
+                clientKey,
+                websiteUrl,
+                websiteKey,
+                proxyType,
+                proxyAddress,
+                proxyPort,
+                proxyLogin,
+                proxyPassword,
+                userAgent,
+                websiteSToken
+                );
+        }
+
+        private static AnticaptchaTask CreateNoCaptchaTask(string type, string host, string clientKey, string websiteUrl,
+            string websiteKey, ProxyType? proxyType, string proxyAddress, int? proxyPort, string proxyLogin,
+            string proxyPassword, string userAgent, string websiteSToken = "")
+        {
+            if (proxyType != null && (string.IsNullOrEmpty(proxyAddress) || !CheckHost(proxyAddress)))
             {
                 throw new Exception("Proxy address is incorrect!");
             }
 
-            if (proxyPort < 1 || proxyPort > 65535)
+            if (proxyType != null && (proxyPort < 1 || proxyPort > 65535))
             {
                 throw new Exception("Proxy port is incorrect!");
             }
@@ -81,16 +120,20 @@ namespace Anticaptcha_example
 
             jObj["clientKey"] = clientKey;
             jObj["task"] = new JObject();
-            jObj["task"]["type"] = "NoCaptchaTask";
+            jObj["task"]["type"] = type;
             jObj["task"]["websiteURL"] = websiteUrl;
             jObj["task"]["websiteKey"] = websiteKey;
             jObj["task"]["websiteSToken"] = websiteSToken;
-            jObj["task"]["proxyType"] = proxyType.ToString();
-            jObj["task"]["proxyAddress"] = proxyAddress;
-            jObj["task"]["proxyPort"] = proxyPort;
-            jObj["task"]["proxyLogin"] = proxyLogin;
-            jObj["task"]["proxyPassword"] = proxyPassword;
             jObj["task"]["userAgent"] = userAgent;
+
+            if (proxyType != null)
+            {
+                jObj["task"]["proxyType"] = proxyType.ToString();
+                jObj["task"]["proxyAddress"] = proxyAddress;
+                jObj["task"]["proxyPort"] = proxyPort;
+                jObj["task"]["proxyLogin"] = proxyLogin;
+                jObj["task"]["proxyPassword"] = proxyPassword;
+            }
 
             try
             {
