@@ -86,9 +86,20 @@ namespace Anticaptcha_example
                 );
         }
 
-        private static AnticaptchaTask CreateNoCaptchaTask(string type, string host, string clientKey, string websiteUrl,
-            string websiteKey, ProxyType? proxyType, string proxyAddress, int? proxyPort, string proxyLogin,
-            string proxyPassword, string userAgent, string websiteSToken = "")
+        private static AnticaptchaTask CreateNoCaptchaTask(
+            string type,
+            string host,
+            string clientKey,
+            string websiteUrl,
+            string websiteKey,
+            ProxyType? proxyType,
+            string proxyAddress,
+            int? proxyPort,
+            string proxyLogin,
+            string proxyPassword,
+            string userAgent,
+            string websiteSToken = ""
+            )
         {
             if (proxyType != null && (string.IsNullOrEmpty(proxyAddress) || !CheckHost(proxyAddress)))
             {
@@ -118,6 +129,7 @@ namespace Anticaptcha_example
 
             var jObj = new JObject();
 
+            jObj["softId"] = 2;
             jObj["clientKey"] = clientKey;
             jObj["task"] = new JObject();
             jObj["task"]["type"] = type;
@@ -252,6 +264,7 @@ namespace Anticaptcha_example
 
             var jObj = new JObject();
 
+            jObj["softId"] = 2;
             jObj["clientKey"] = clientKey;
             jObj["task"] = new JObject();
             jObj["task"]["type"] = "ImageToTextTask";

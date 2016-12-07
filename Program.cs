@@ -81,16 +81,23 @@ namespace Anticaptcha_example
                     UserAgent
                     );
 
-                if (task.GetErrorDescription() != null && task.GetErrorDescription().Length > 0)
+                if (task == null)
                 {
-                    Console.WriteLine("Unfortunately we got the following error from the API: " +
-                                      task.GetErrorDescription());
+                    Console.WriteLine("Somehow task is NULL...");
                 }
+                else
+                {
+                    if (task.GetErrorDescription() != null && task.GetErrorDescription().Length > 0)
+                    {
+                        Console.WriteLine("Unfortunately we got the following error from the API: " +
+                                          task.GetErrorDescription());
+                    }
 
-                Console.WriteLine("Task ID is " + task.GetTaskId() +
-                                  ". NoCaptcha (proxyless) task is sent, will wait for the result.");
-                Thread.Sleep(2000);
-                ProcessTask(task);
+                    Console.WriteLine("Task ID is " + task.GetTaskId() +
+                                      ". NoCaptcha (proxyless) task is sent, will wait for the result.");
+                    Thread.Sleep(2000);
+                    ProcessTask(task);
+                }
             }
             catch (Exception e)
             {
