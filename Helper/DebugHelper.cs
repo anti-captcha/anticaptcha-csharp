@@ -8,7 +8,7 @@ namespace Anticaptcha_example.Helper
         {
             Error,
             Info,
-            Good
+            Success
         }
 
         public static bool VerboseMode { set; private get; }
@@ -28,7 +28,7 @@ namespace Anticaptcha_example.Helper
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            else if (severity.Equals(Type.Good))
+            else if (severity.Equals(Type.Success))
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }

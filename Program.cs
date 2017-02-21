@@ -35,7 +35,7 @@ namespace Anticaptcha_example
             }
             else
             {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Good);
+                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Anticaptcha_example
             }
             else
             {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Good);
+                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Anticaptcha_example
             }
             else
             {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Good);
+                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
             }
         }
     }

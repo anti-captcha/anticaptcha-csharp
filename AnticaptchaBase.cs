@@ -61,7 +61,7 @@ namespace Anticaptcha_example
             }
 
             TaskId = (int) response.TaskId;
-            DebugHelper.Out("Task ID: " + TaskId, DebugHelper.Type.Good);
+            DebugHelper.Out("Task ID: " + TaskId, DebugHelper.Type.Success);
 
             return true;
         }
@@ -117,7 +117,7 @@ namespace Anticaptcha_example
 
             if (TaskInfo.Status.Equals(TaskResultResponse.StatusType.Ready))
             {
-                DebugHelper.Out("The task is complete!", DebugHelper.Type.Good);
+                DebugHelper.Out("The task is complete!", DebugHelper.Type.Success);
 
                 return true;
             }
