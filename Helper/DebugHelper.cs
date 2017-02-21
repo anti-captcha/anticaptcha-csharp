@@ -13,22 +13,22 @@ namespace Anticaptcha_example.Helper
 
         public static bool VerboseMode { set; private get; }
 
-        public static void Out(string message, Type? severity = null)
+        public static void Out(string message, Type? type = null)
         {
             if (!VerboseMode)
             {
                 return;
             }
 
-            if (severity.Equals(Type.Error))
+            if (type.Equals(Type.Error))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            else if (severity.Equals(Type.Info))
+            else if (type.Equals(Type.Info))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            else if (severity.Equals(Type.Success))
+            else if (type.Equals(Type.Success))
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
