@@ -35,7 +35,7 @@ namespace Anticaptcha_example
             DebugHelper.Out("Connecting to " + Host, DebugHelper.Type.Info);
             dynamic postResult = JsonPostRequest(ApiMethod.CreateTask, jsonPostData);
 
-            if (postResult.Equals(false) || postResult.Equals(null))
+            if (postResult == null || postResult.Equals(false))
             {
                 DebugHelper.Out("API error", DebugHelper.Type.Error);
 
@@ -92,7 +92,7 @@ namespace Anticaptcha_example
 
             dynamic postResult = JsonPostRequest(ApiMethod.GetTaskResult, jsonPostData);
 
-            if (postResult.Equals(false) || postResult.Equals(null))
+            if (postResult == null || postResult.Equals(false))
             {
                 DebugHelper.Out("API error", DebugHelper.Type.Error);
 
@@ -142,7 +142,14 @@ namespace Anticaptcha_example
 
             if (String.IsNullOrEmpty(error))
             {
-                return data;
+                if (data == null)
+                {
+                    error = "Got empty or invalid response from API";
+                }
+                else
+                {
+                    return data;
+                }
             }
 
             DebugHelper.Out(error, DebugHelper.Type.Error);
@@ -157,7 +164,7 @@ namespace Anticaptcha_example
 
             dynamic postResult = JsonPostRequest(ApiMethod.GetBalance, jsonPostData);
 
-            if (postResult.Equals(false) || postResult.Equals(null))
+            if (postResult == null || postResult.Equals(false))
             {
                 DebugHelper.Out("API error", DebugHelper.Type.Error);
 
