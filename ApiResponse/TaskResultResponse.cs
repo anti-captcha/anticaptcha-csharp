@@ -39,6 +39,11 @@ namespace Anticaptcha_example.ApiResponse
                             Text = JsonHelper.ExtractStr(json, "solution", "text", silent: true),
                             Url = JsonHelper.ExtractStr(json, "solution", "url", silent: true)
                         };
+
+                        if (Solution.GRecaptchaResponse == null && Solution.Text == null)
+                        {
+                            DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
+                        }
                     }
                 }
                 else

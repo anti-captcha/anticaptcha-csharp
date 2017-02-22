@@ -46,6 +46,8 @@ namespace Anticaptcha_example
 
             if (!response.ErrorId.Equals(0))
             {
+                ErrorMessage = response.ErrorDescription;
+
                 DebugHelper.Out(
                     "API error " + response.ErrorId + ": " + response.ErrorDescription,
                     DebugHelper.Type.Error
@@ -71,6 +73,8 @@ namespace Anticaptcha_example
         {
             if (currentSecond >= maxSeconds)
             {
+                DebugHelper.Out("Time's out.", DebugHelper.Type.Error);
+
                 return false;
             }
 
@@ -104,6 +108,7 @@ namespace Anticaptcha_example
             if (!TaskInfo.ErrorId.Equals(0))
             {
                 ErrorMessage = TaskInfo.ErrorDescription;
+
                 DebugHelper.Out("API error " + TaskInfo.ErrorId + ": " + ErrorMessage, DebugHelper.Type.Error);
 
                 return false;
@@ -118,6 +123,13 @@ namespace Anticaptcha_example
 
             if (TaskInfo.Status.Equals(TaskResultResponse.StatusType.Ready))
             {
+                if (TaskInfo.Solution.GRecaptchaResponse == null && TaskInfo.Solution.Text == null)
+                {
+                    DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
+
+                    return false;
+                }
+
                 DebugHelper.Out("The task is complete!", DebugHelper.Type.Success);
 
                 return true;
@@ -151,6 +163,10 @@ namespace Anticaptcha_example
                     return data;
                 }
             }
+            else
+            {
+                error = "HTTP or JSON error: " + error;
+            }
 
             DebugHelper.Out(error, DebugHelper.Type.Error);
 
@@ -175,6 +191,8 @@ namespace Anticaptcha_example
 
             if (!balanceResponse.ErrorId.Equals(0))
             {
+                ErrorMessage = balanceResponse.ErrorDescription;
+
                 DebugHelper.Out(
                     "API error " + balanceResponse.ErrorId + ": " + balanceResponse.ErrorDescription,
                     DebugHelper.Type.Error
