@@ -8,11 +8,33 @@ namespace Anticaptcha_example
     {
         private static void Main()
         {
+            ExampleGetBalance();
             ExampleImageToText();
             ExampleNoCaptchaProxyless();
             ExampleNoCaptcha();
 
             Console.ReadKey();
+        }
+
+        private static void ExampleGetBalance()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new ImageToText
+            {
+                ClientKey = "d80651cde66496a42a548e9dde92ac32"
+            };
+
+            var balance = api.GetBalance();
+
+            if (balance == null)
+            {
+                DebugHelper.Out("GetBalance() failed. " + api.ErrorMessage ?? "", DebugHelper.Type.Error);
+            }
+            else
+            {
+                DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
+            }
         }
 
         private static void ExampleImageToText()
