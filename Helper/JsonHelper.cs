@@ -1,12 +1,14 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
+using Newtonsoft.Json;
 
 namespace Anticaptcha_example.Helper
 {
     public class JsonHelper
     {
-        public static string ExtractStr(dynamic json, string firstLevel, string secondLevel = null)
+        public static string ExtractStr(dynamic json, string firstLevel, string secondLevel = null, bool silent = false)
         {
+            var path = firstLevel + (secondLevel == null ? "" : "=>" + secondLevel);
+
             try
             {
                 object result = json[firstLevel];
@@ -18,6 +20,11 @@ namespace Anticaptcha_example.Helper
 
                 if (result == null)
                 {
+                    if (!silent)
+                    {
+                        DebugHelper.JsonFieldParseError(path, json);
+                    }
+
                     return null;
                 }
 
@@ -25,8 +32,18 @@ namespace Anticaptcha_example.Helper
             }
             catch
             {
+                if (!silent)
+                {
+                    DebugHelper.JsonFieldParseError(path, json);
+                }
+
                 return null;
             }
+        }
+
+        public static string AsString(dynamic json)
+        {
+            return JsonConvert.SerializeObject(json, Formatting.Indented);
         }
 
         public static double? ExtractDouble(dynamic json, string firstLevel, string secondLevel = null)
@@ -39,7 +56,7 @@ namespace Anticaptcha_example.Helper
                     out outDouble))
             {
                 var path = firstLevel + (secondLevel == null ? "" : "=>" + secondLevel);
-                Error(path, json);
+                DebugHelper.JsonFieldParseError(path, json);
 
                 return null;
             }
@@ -55,24 +72,12 @@ namespace Anticaptcha_example.Helper
             if (!int.TryParse(numberAsStr, out outInt))
             {
                 var path = firstLevel + (secondLevel == null ? "" : "=>" + secondLevel);
-                Error(path, json);
+                DebugHelper.JsonFieldParseError(path, json);
 
                 return null;
             }
 
             return outInt;
-        }
-
-        public static void Error(string field, dynamic submitResult, Exception exception = null)
-        {
-            string error = field + " could not be parsed. Raw response: " + submitResult.ToString();
-
-            if (exception != null)
-            {
-                error += "; Exception message: " + exception.Message;
-            }
-
-            DebugHelper.Out(error, DebugHelper.Type.Error);
         }
     }
 }

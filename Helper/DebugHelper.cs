@@ -13,6 +13,12 @@ namespace Anticaptcha_example.Helper
 
         public static bool VerboseMode { set; private get; }
 
+        public static void JsonFieldParseError(string field, dynamic submitResult)
+        {
+            string error = field + " could not be parsed. Raw response: " + JsonHelper.AsString(submitResult);
+            Out(error, Type.Error);
+        }
+
         public static void Out(string message, Type? type = null)
         {
             if (!VerboseMode)

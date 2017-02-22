@@ -29,6 +29,8 @@ namespace Anticaptcha_example.Api
                 string.IsNullOrEmpty(ProxyAddress))
             {
                 DebugHelper.Out("Proxy data is incorrect!", DebugHelper.Type.Error);
+
+                return null;
             }
 
             postData.Add("proxyType", ProxyType.ToString().ToLower());

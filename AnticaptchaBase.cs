@@ -32,6 +32,7 @@ namespace Anticaptcha_example
             jsonPostData["clientKey"] = ClientKey;
             jsonPostData["task"] = taskJson;
 
+            DebugHelper.Out("Connecting to " + Host, DebugHelper.Type.Info);
             dynamic postResult = JsonPostRequest(ApiMethod.CreateTask, jsonPostData);
 
             if (postResult.Equals(false) || postResult.Equals(null))
@@ -55,7 +56,7 @@ namespace Anticaptcha_example
 
             if (response.TaskId == null)
             {
-                JsonHelper.Error("taskId", postResult);
+                DebugHelper.JsonFieldParseError("taskId", postResult);
 
                 return false;
             }
@@ -93,7 +94,7 @@ namespace Anticaptcha_example
 
             if (postResult.Equals(false) || postResult.Equals(null))
             {
-                DebugHelper.Out("API error", DebugHelper.Type.Info);
+                DebugHelper.Out("API error", DebugHelper.Type.Error);
 
                 return false;
             }
@@ -102,7 +103,7 @@ namespace Anticaptcha_example
 
             if (!TaskInfo.ErrorId.Equals(0))
             {
-                ErrorMessage = TaskInfo.ErrorDescription ?? "an error without a message";
+                ErrorMessage = TaskInfo.ErrorDescription;
                 DebugHelper.Out("API error " + TaskInfo.ErrorId + ": " + ErrorMessage, DebugHelper.Type.Error);
 
                 return false;
@@ -167,8 +168,10 @@ namespace Anticaptcha_example
 
             if (!balanceResponse.ErrorId.Equals(0))
             {
-                DebugHelper.Out("API error " + balanceResponse.ErrorId + ": " + balanceResponse.ErrorDescription,
-                    DebugHelper.Type.Error);
+                DebugHelper.Out(
+                    "API error " + balanceResponse.ErrorId + ": " + balanceResponse.ErrorDescription,
+                    DebugHelper.Type.Error
+                    );
 
                 return null;
             }

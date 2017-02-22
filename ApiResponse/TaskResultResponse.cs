@@ -14,29 +14,44 @@ namespace Anticaptcha_example.ApiResponse
 
         public TaskResultResponse(dynamic json)
         {
-            Status = ParseStatus(JsonHelper.ExtractStr(json, "status"));
             ErrorId = JsonHelper.ExtractInt(json, "errorId");
 
-            if (!ErrorId.Equals(0))
+            if (ErrorId != null)
             {
-                ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
-                ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription");
-            }
-            else if (Status.Equals(StatusType.Ready))
-            {
-                Cost = JsonHelper.ExtractDouble(json, "cost");
-                Ip = JsonHelper.ExtractStr(json, "ip");
-                SolveCount = JsonHelper.ExtractInt(json, "solveCount");
-                CreateTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "createTime"));
-                EndTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "endTime"));
-
-                Solution = new SolutionData
+                if (ErrorId.Equals(0))
                 {
-                    GRecaptchaResponse = JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponse"),
-                    GRecaptchaResponseMd5 = JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponseMd5"),
-                    Text = JsonHelper.ExtractStr(json, "solution", "text"),
-                    Url = JsonHelper.ExtractStr(json, "solution", "url")
-                };
+                    Status = ParseStatus(JsonHelper.ExtractStr(json, "status"));
+
+                    if (Status.Equals(StatusType.Ready))
+                    {
+                        Cost = JsonHelper.ExtractDouble(json, "cost");
+                        Ip = JsonHelper.ExtractStr(json, "ip");
+                        SolveCount = JsonHelper.ExtractInt(json, "solveCount");
+                        CreateTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "createTime"));
+                        EndTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "endTime"));
+
+                        Solution = new SolutionData
+                        {
+                            GRecaptchaResponse =
+                                JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponse", silent: true),
+                            GRecaptchaResponseMd5 =
+                                JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponseMd5", silent: true),
+                            Text = JsonHelper.ExtractStr(json, "solution", "text", silent: true),
+                            Url = JsonHelper.ExtractStr(json, "solution", "url", silent: true)
+                        };
+                    }
+                }
+                else
+                {
+                    ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
+                    ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription") ?? "(no error description)";
+
+                    DebugHelper.Out(ErrorDescription, DebugHelper.Type.Error);
+                }
+            }
+            else
+            {
+                DebugHelper.Out("Unknown error", DebugHelper.Type.Error);
             }
         }
 
@@ -47,8 +62,17 @@ namespace Anticaptcha_example.ApiResponse
         public SolutionData Solution { get; private set; }
         public double? Cost { get; private set; }
         public string Ip { get; private set; }
+
+        /// <summary>
+        ///     Task create time in UTC
+        /// </summary>
         public DateTime? CreateTime { get; private set; }
+
+        /// <summary>
+        ///     Task end time in UTC
+        /// </summary>
         public DateTime? EndTime { get; private set; }
+
         public int? SolveCount { get; private set; }
 
         private StatusType? ParseStatus(string status)
@@ -72,7 +96,7 @@ namespace Anticaptcha_example.ApiResponse
             }
         }
 
-        public static DateTime? UnixTimeStampToDateTime(double? unixTimeStamp)
+        private static DateTime? UnixTimeStampToDateTime(double? unixTimeStamp)
         {
             if (unixTimeStamp == null)
             {
@@ -81,7 +105,7 @@ namespace Anticaptcha_example.ApiResponse
 
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-            return dtDateTime.AddSeconds((double) unixTimeStamp).ToLocalTime();
+            return dtDateTime.AddSeconds((double) unixTimeStamp).ToUniversalTime();
         }
 
         public class SolutionData

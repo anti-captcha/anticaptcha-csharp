@@ -27,15 +27,17 @@ namespace Anticaptcha_example.Api
                 {
                     DebugHelper.Out("File " + value + " not found", DebugHelper.Type.Error);
                 }
-
-                BodyBase64 = StringHelper.ImageFileToBase64String(value);
-
-                if (BodyBase64 == null)
+                else
                 {
-                    DebugHelper.Out(
-                        "Could not convert the file " + value + " to base64. Is this an image file?",
-                        DebugHelper.Type.Error
-                        );
+                    BodyBase64 = StringHelper.ImageFileToBase64String(value);
+
+                    if (BodyBase64 == null)
+                    {
+                        DebugHelper.Out(
+                            "Could not convert the file " + value + " to base64. Is this an image file?",
+                            DebugHelper.Type.Error
+                            );
+                    }
                 }
             }
         }

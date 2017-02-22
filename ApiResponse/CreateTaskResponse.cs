@@ -7,12 +7,22 @@ namespace Anticaptcha_example.ApiResponse
         public CreateTaskResponse(dynamic json)
         {
             ErrorId = JsonHelper.ExtractInt(json, "errorId");
-            ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
-            ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription");
 
-            if (ErrorId.Equals(0))
+            if (ErrorId != null)
             {
-                TaskId = JsonHelper.ExtractInt(json, "taskId");
+                if (ErrorId.Equals(0))
+                {
+                    TaskId = JsonHelper.ExtractInt(json, "taskId");
+                }
+                else
+                {
+                    ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
+                    ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription") ?? "(no error description)";
+                }
+            }
+            else
+            {
+                DebugHelper.Out("Unknown error", DebugHelper.Type.Error);
             }
         }
 

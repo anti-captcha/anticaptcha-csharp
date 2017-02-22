@@ -7,12 +7,22 @@ namespace Anticaptcha_example.ApiResponse
         public BalanceResponse(dynamic json)
         {
             ErrorId = JsonHelper.ExtractInt(json, "errorId");
-            ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
-            ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription");
 
-            if (ErrorId.Equals(0))
+            if (ErrorId != null)
             {
-                Balance = JsonHelper.ExtractDouble(json, "balance");
+                if (ErrorId.Equals(0))
+                {
+                    Balance = JsonHelper.ExtractDouble(json, "balance");
+                }
+                else
+                {
+                    ErrorCode = JsonHelper.ExtractStr(json, "errorCode");
+                    ErrorDescription = JsonHelper.ExtractStr(json, "errorDescription") ?? "(no error description)";
+                }
+            }
+            else
+            {
+                DebugHelper.Out("Unknown error", DebugHelper.Type.Error);
             }
         }
 
