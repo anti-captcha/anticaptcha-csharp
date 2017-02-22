@@ -18,6 +18,7 @@ namespace Anticaptcha_example.Helper
             request.Method = "POST";
             request.ContentType = "application/json";
             request.ContentLength = postBody.Length;
+            request.Timeout = 30000;
 
             try
             {
