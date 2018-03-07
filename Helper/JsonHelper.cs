@@ -14,16 +14,12 @@ namespace Anticaptcha_example.Helper
                 object result = json[firstLevel];
 
                 if (result != null && secondLevel != null)
-                {
                     result = json[firstLevel][secondLevel];
-                }
 
                 if (result == null)
                 {
                     if (!silent)
-                    {
                         DebugHelper.JsonFieldParseError(path, json);
-                    }
 
                     return null;
                 }
@@ -33,9 +29,7 @@ namespace Anticaptcha_example.Helper
             catch
             {
                 if (!silent)
-                {
                     DebugHelper.JsonFieldParseError(path, json);
-                }
 
                 return null;
             }
@@ -64,15 +58,17 @@ namespace Anticaptcha_example.Helper
             return outDouble;
         }
 
-        public static int? ExtractInt(dynamic json, string firstLevel, string secondLevel = null)
+        public static int? ExtractInt(dynamic json, string firstLevel, string secondLevel = null, bool silent = false)
         {
             int outInt;
-            string numberAsStr = JsonHelper.ExtractStr(json, firstLevel, secondLevel);
+            string numberAsStr = JsonHelper.ExtractStr(json, firstLevel, secondLevel, silent);
 
             if (!int.TryParse(numberAsStr, out outInt))
             {
                 var path = firstLevel + (secondLevel == null ? "" : "=>" + secondLevel);
-                DebugHelper.JsonFieldParseError(path, json);
+
+                if (!silent)
+                    DebugHelper.JsonFieldParseError(path, json);
 
                 return null;
             }

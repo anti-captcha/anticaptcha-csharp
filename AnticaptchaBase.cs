@@ -51,7 +51,7 @@ namespace Anticaptcha_example
                 DebugHelper.Out(
                     "API error " + response.ErrorId + ": " + response.ErrorDescription,
                     DebugHelper.Type.Error
-                    );
+                );
 
                 return false;
             }
@@ -123,7 +123,8 @@ namespace Anticaptcha_example
 
             if (TaskInfo.Status.Equals(TaskResultResponse.StatusType.Ready))
             {
-                if (TaskInfo.Solution.GRecaptchaResponse == null && TaskInfo.Solution.Text == null)
+                if (TaskInfo.Solution.GRecaptchaResponse == null && TaskInfo.Solution.Text == null &&
+                    TaskInfo.Solution.Answers == null)
                 {
                     DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
 
@@ -144,29 +145,21 @@ namespace Anticaptcha_example
         private dynamic JsonPostRequest(ApiMethod methodName, JObject jsonPostData)
         {
             string error;
-            var methodNameStr = Char.ToLowerInvariant(methodName.ToString()[0]) + methodName.ToString().Substring(1);
+            var methodNameStr = char.ToLowerInvariant(methodName.ToString()[0]) + methodName.ToString().Substring(1);
 
             dynamic data = HttpHelper.Post(
                 new Uri(Scheme + "://" + Host + "/" + methodNameStr),
                 JsonConvert.SerializeObject(jsonPostData, Formatting.Indented),
                 out error
-                );
+            );
 
-            if (String.IsNullOrEmpty(error))
-            {
+            if (string.IsNullOrEmpty(error))
                 if (data == null)
-                {
                     error = "Got empty or invalid response from API";
-                }
                 else
-                {
                     return data;
-                }
-            }
             else
-            {
                 error = "HTTP or JSON error: " + error;
-            }
 
             DebugHelper.Out(error, DebugHelper.Type.Error);
 
@@ -196,7 +189,7 @@ namespace Anticaptcha_example
                 DebugHelper.Out(
                     "API error " + balanceResponse.ErrorId + ": " + balanceResponse.ErrorDescription,
                     DebugHelper.Type.Error
-                    );
+                );
 
                 return null;
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Anticaptcha_example.Api;
 using Anticaptcha_example.Helper;
+using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example
 {
@@ -12,6 +13,7 @@ namespace Anticaptcha_example
             ExampleImageToText();
             ExampleNoCaptchaProxyless();
             ExampleNoCaptcha();
+            ExampleCustomCaptcha();
 
             Console.ReadKey();
         }
@@ -22,19 +24,15 @@ namespace Anticaptcha_example
 
             var api = new ImageToText
             {
-                ClientKey = "d80651cde66496a42a548e9dde92ac32"
+                ClientKey = "1234567890123456789012"
             };
 
             var balance = api.GetBalance();
 
             if (balance == null)
-            {
-                DebugHelper.Out("GetBalance() failed. " + api.ErrorMessage ?? "", DebugHelper.Type.Error);
-            }
+                DebugHelper.Out("GetBalance() failed. " + api.ErrorMessage, DebugHelper.Type.Error);
             else
-            {
                 DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
-            }
         }
 
         private static void ExampleImageToText()
@@ -48,17 +46,11 @@ namespace Anticaptcha_example
             };
 
             if (!api.CreateTask())
-            {
-                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage ?? "", DebugHelper.Type.Error);
-            }
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
             else if (!api.WaitForResult())
-            {
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
-            }
             else
-            {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
-            }
+                DebugHelper.Out("Result: " + api.GetTaskSolution().Text, DebugHelper.Type.Success);
         }
 
         private static void ExampleNoCaptchaProxyless()
@@ -73,17 +65,11 @@ namespace Anticaptcha_example
             };
 
             if (!api.CreateTask())
-            {
                 DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
-            }
             else if (!api.WaitForResult())
-            {
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
-            }
             else
-            {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
-            }
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
         }
 
         private static void ExampleNoCaptcha()
@@ -105,19 +91,80 @@ namespace Anticaptcha_example
                 ProxyPassword = "456"
             };
 
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleCustomCaptcha()
+        {
+            DebugHelper.VerboseMode = true;
+            var randInt = new Random().Next(0, 10000);
+
+            var api = new CustomCaptcha
+            {
+                ClientKey = "1234567890123456789012",
+                // random here to let the same task to be assigned to the same workers
+                ImageUrl = "https://files.anti-captcha.com/26/41f/c23/7c50ff19.jpg?random=" + randInt,
+                Assignment = "Enter the licence plate number",
+                Forms = new JArray
+                {
+                    new JObject
+                    {
+                        {"label", "Number"},
+                        {"labelHint", false},
+                        {"contentType", false},
+                        {"name", "license_plate"},
+                        {"inputType", "text"},
+                        {
+                            "inputOptions", new JObject
+                            {
+                                {"width", "100"},
+                                {"placeHolder", "Enter letters and numbers without spaces"}
+                            }
+                        }
+                    },
+                    new JObject
+                    {
+                        {"label", "Car color"},
+                        {"labelHint", "Select the car color"},
+                        {"contentType", false},
+                        {"name", "color"},
+                        {"inputType", "select"},
+                        {
+                            "inputOptions", new JArray
+                            {
+                                new JObject
+                                {
+                                    {"value", "white"},
+                                    {"caption", "White color"}
+                                },
+                                new JObject
+                                {
+                                    {"value", "black"},
+                                    {"caption", "Black color"}
+                                },
+                                new JObject
+                                {
+                                    {"value", "grey"},
+                                    {"caption", "Grey color"}
+                                }
+                            }
+                        }
+                    }
+                }
+            };
 
             if (!api.CreateTask())
-            {
                 DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
-            }
             else if (!api.WaitForResult())
-            {
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
-            }
             else
-            {
-                DebugHelper.Out("Result: " + api.GetTaskSolution(), DebugHelper.Type.Success);
-            }
+                foreach (var answer in api.GetTaskSolution().Answers)
+                    DebugHelper.Out("The answer for a question '" + answer.Key + "' : " + answer.Value);
         }
     }
 }

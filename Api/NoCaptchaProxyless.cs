@@ -1,5 +1,6 @@
-﻿using System;
+﻿using Anticaptcha_example.ApiResponse;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Anticaptcha_example.Api
 {
@@ -20,9 +21,9 @@ namespace Anticaptcha_example.Api
             };
         }
 
-        public string GetTaskSolution()
+        public TaskResultResponse.SolutionData GetTaskSolution()
         {
-            return TaskInfo.Solution.GRecaptchaResponse;
+            return TaskInfo.Solution;
         }
     }
 }

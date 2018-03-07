@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using Anticaptcha_example.ApiResponse;
 using Anticaptcha_example.Helper;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Anticaptcha_example.Api
 {
@@ -69,9 +70,9 @@ namespace Anticaptcha_example.Api
             };
         }
 
-        public string GetTaskSolution()
+        public TaskResultResponse.SolutionData GetTaskSolution()
         {
-            return TaskInfo.Solution.Text;
+            return TaskInfo.Solution;
         }
     }
 }

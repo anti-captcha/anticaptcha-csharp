@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Anticaptcha_example.Helper;
+using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example.ApiResponse
 {
@@ -17,7 +18,6 @@ namespace Anticaptcha_example.ApiResponse
             ErrorId = JsonHelper.ExtractInt(json, "errorId");
 
             if (ErrorId != null)
-            {
                 if (ErrorId.Equals(0))
                 {
                     Status = ParseStatus(JsonHelper.ExtractStr(json, "status"));
@@ -25,8 +25,8 @@ namespace Anticaptcha_example.ApiResponse
                     if (Status.Equals(StatusType.Ready))
                     {
                         Cost = JsonHelper.ExtractDouble(json, "cost");
-                        Ip = JsonHelper.ExtractStr(json, "ip");
-                        SolveCount = JsonHelper.ExtractInt(json, "solveCount");
+                        Ip = JsonHelper.ExtractStr(json, "ip", null, true);
+                        SolveCount = JsonHelper.ExtractInt(json, "solveCount", null, true);
                         CreateTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "createTime"));
                         EndTime = UnixTimeStampToDateTime(JsonHelper.ExtractDouble(json, "endTime"));
 
@@ -40,10 +40,17 @@ namespace Anticaptcha_example.ApiResponse
                             Url = JsonHelper.ExtractStr(json, "solution", "url", silent: true)
                         };
 
-                        if (Solution.GRecaptchaResponse == null && Solution.Text == null)
+                        try
                         {
-                            DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
+                            Solution.Answers = json.solution.answers;
                         }
+                        catch
+                        {
+                            Solution.Answers = null;
+                        }
+
+                        if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null)
+                            DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
                     }
                 }
                 else
@@ -53,18 +60,15 @@ namespace Anticaptcha_example.ApiResponse
 
                     DebugHelper.Out(ErrorDescription, DebugHelper.Type.Error);
                 }
-            }
             else
-            {
                 DebugHelper.Out("Unknown error", DebugHelper.Type.Error);
-            }
         }
 
-        public int? ErrorId { get; private set; }
+        public int? ErrorId { get; }
         public string ErrorCode { get; private set; }
-        public string ErrorDescription { get; private set; }
-        public StatusType? Status { get; private set; }
-        public SolutionData Solution { get; private set; }
+        public string ErrorDescription { get; }
+        public StatusType? Status { get; }
+        public SolutionData Solution { get; }
         public double? Cost { get; private set; }
         public string Ip { get; private set; }
 
@@ -82,18 +86,16 @@ namespace Anticaptcha_example.ApiResponse
 
         private StatusType? ParseStatus(string status)
         {
-            if (String.IsNullOrEmpty(status))
-            {
+            if (string.IsNullOrEmpty(status))
                 return null;
-            }
 
             try
             {
                 return (StatusType) Enum.Parse(
-                    typeof (StatusType),
+                    typeof(StatusType),
                     CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status),
                     true
-                    );
+                );
             }
             catch
             {
@@ -104,9 +106,7 @@ namespace Anticaptcha_example.ApiResponse
         private static DateTime? UnixTimeStampToDateTime(double? unixTimeStamp)
         {
             if (unixTimeStamp == null)
-            {
                 return null;
-            }
 
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
@@ -115,6 +115,7 @@ namespace Anticaptcha_example.ApiResponse
 
         public class SolutionData
         {
+            public JObject Answers { get; internal set; } // Will be available for CustomCaptchaTasks only!
             public string GRecaptchaResponse { get; internal set; } // Will be available for Recaptcha tasks only!
             public string GRecaptchaResponseMd5 { get; internal set; } // for Recaptcha with isExtended=true property
             public string Text { get; internal set; } // Will be available for ImageToText tasks only!

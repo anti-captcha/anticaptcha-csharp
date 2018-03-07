@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Anticaptcha_example.ApiResponse;
+using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example
 {
     public interface IAnticaptchaTaskProtocol
     {
         JObject GetPostData();
-        string GetTaskSolution();
+        TaskResultResponse.SolutionData GetTaskSolution();
     }
 }
