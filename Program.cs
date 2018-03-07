@@ -14,6 +14,7 @@ namespace Anticaptcha_example
             ExampleNoCaptchaProxyless();
             ExampleNoCaptcha();
             ExampleCustomCaptcha();
+            ExampleFunCaptcha();
 
             Console.ReadKey();
         }
@@ -84,7 +85,7 @@ namespace Anticaptcha_example
                 UserAgent =
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
                 // proxy access parameters
-                ProxyType = NoCaptcha.ProxyTypeOption.Http,
+                ProxyType = AnticaptchaBase.ProxyTypeOption.Http,
                 ProxyAddress = "xx.xx.xx.xx",
                 ProxyPort = 8282,
                 ProxyLogin = "123",
@@ -149,8 +150,8 @@ namespace Anticaptcha_example
                                 },
                                 new JObject
                                 {
-                                    {"value", "grey"},
-                                    {"caption", "Grey color"}
+                                    {"value", "gray"},
+                                    {"caption", "Gray color"}
                                 }
                             }
                         }
@@ -164,7 +165,37 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
             else
                 foreach (var answer in api.GetTaskSolution().Answers)
-                    DebugHelper.Out("The answer for a question '" + answer.Key + "' : " + answer.Value);
+                    DebugHelper.Out(
+                        "The answer for the question '" + answer.Key + "' : " + answer.Value,
+                        DebugHelper.Type.Success
+                    );
+        }
+
+        private static void ExampleFunCaptcha()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new FunCaptcha
+            {
+                ClientKey = "1234567890123456789012",
+                WebsiteUrl = new Uri("http://http.myjino.ru/funcaptcha_test/"),
+                WebsitePublicKey = "DE0B0BB7-1EE4-4D70-1853-31B835D4506B",
+                UserAgent =
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
+                // proxy access parameters
+                ProxyType = AnticaptchaBase.ProxyTypeOption.Http,
+                ProxyAddress = "xx.xx.xx.xx",
+                ProxyPort = 8282,
+                ProxyLogin = "123",
+                ProxyPassword = "456"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().Token, DebugHelper.Type.Success);
         }
     }
 }

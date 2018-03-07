@@ -32,6 +32,7 @@ namespace Anticaptcha_example.ApiResponse
 
                         Solution = new SolutionData
                         {
+                            Token = JsonHelper.ExtractStr(json, "solution", "token", true),
                             GRecaptchaResponse =
                                 JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponse", silent: true),
                             GRecaptchaResponseMd5 =
@@ -49,7 +50,8 @@ namespace Anticaptcha_example.ApiResponse
                             Solution.Answers = null;
                         }
 
-                        if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null)
+                        if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null
+                            && Solution.Token == null)
                             DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
                     }
                 }
@@ -115,11 +117,12 @@ namespace Anticaptcha_example.ApiResponse
 
         public class SolutionData
         {
-            public JObject Answers { get; internal set; } // Will be available for CustomCaptchaTasks only!
+            public JObject Answers { get; internal set; } // Will be available for CustomCaptcha tasks only!
             public string GRecaptchaResponse { get; internal set; } // Will be available for Recaptcha tasks only!
             public string GRecaptchaResponseMd5 { get; internal set; } // for Recaptcha with isExtended=true property
             public string Text { get; internal set; } // Will be available for ImageToText tasks only!
             public string Url { get; internal set; }
+            public string Token { get; internal set; } // Will be available for FunCaptcha tasks only!
         }
     }
 }
