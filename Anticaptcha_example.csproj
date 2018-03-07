@@ -51,6 +51,7 @@
     <Compile Include="ApiResponse\BalanceResponse.cs" />
     <Compile Include="ApiResponse\CreateTaskResponse.cs" />
     <Compile Include="Api\CustomCaptcha.cs" />
+    <Compile Include="Api\FunCaptcha.cs" />
     <Compile Include="Api\NoCaptcha.cs" />
     <Compile Include="Helper\DebugHelper.cs" />
     <Compile Include="Helper\HttpHelper.cs" />

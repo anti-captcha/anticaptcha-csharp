@@ -9,6 +9,13 @@ namespace Anticaptcha_example
 {
     public abstract class AnticaptchaBase
     {
+        public enum ProxyTypeOption
+        {
+            Http,
+            Socks4,
+            Socks5
+        }
+
         private const string Host = "api.anti-captcha.com";
         private const SchemeType Scheme = SchemeType.Https;
         public string ErrorMessage { get; private set; }

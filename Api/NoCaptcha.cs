@@ -5,13 +5,6 @@ namespace Anticaptcha_example.Api
 {
     public class NoCaptcha : NoCaptchaProxyless
     {
-        public enum ProxyTypeOption
-        {
-            Http,
-            Socks4,
-            Socks5
-        }
-
         public string Cookies { protected get; set; }
         public string ProxyLogin { protected get; set; }
         public string ProxyPassword { protected get; set; }
