@@ -7,12 +7,19 @@ namespace Anticaptcha_example.Api
 {
     public class ImageToText : AnticaptchaBase, IAnticaptchaTaskProtocol
     {
+        public enum NumericOption
+        {
+            NoRequirements,
+            NumbersOnly,
+            AnyLettersExceptNumbers
+        }
+
         public ImageToText()
         {
             BodyBase64 = "";
             Phrase = false;
             Case = false;
-            Numeric = false;
+            Numeric = NumericOption.NoRequirements;
             Math = 0;
             MinLength = 0;
             MaxLength = 0;
@@ -45,7 +52,7 @@ namespace Anticaptcha_example.Api
 
         public bool Phrase { private get; set; }
         public bool Case { private get; set; }
-        public bool Numeric { private get; set; }
+        public NumericOption Numeric { private get; set; }
         public int Math { private get; set; }
         public int MinLength { private get; set; }
         public int MaxLength { private get; set; }
@@ -63,7 +70,7 @@ namespace Anticaptcha_example.Api
                 {"body", BodyBase64.Replace("\r", "").Replace("\n", "")},
                 {"phrase", Phrase},
                 {"case", Case},
-                {"numeric", Numeric},
+                {"numeric", Numeric.Equals(NumericOption.NoRequirements) ? 0 : Numeric.Equals(NumericOption.NumbersOnly) ? 1 : 2},
                 {"math", Math},
                 {"minLength", MinLength},
                 {"maxLength", MaxLength}
