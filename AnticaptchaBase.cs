@@ -131,7 +131,9 @@ namespace Anticaptcha_example
             if (TaskInfo.Status.Equals(TaskResultResponse.StatusType.Ready))
             {
                 if (TaskInfo.Solution.GRecaptchaResponse == null && TaskInfo.Solution.Text == null
-                    && TaskInfo.Solution.Answers == null && TaskInfo.Solution.Token == null)
+                    && TaskInfo.Solution.Answers == null && TaskInfo.Solution.Token == null &&
+                    TaskInfo.Solution.Challenge == null && TaskInfo.Solution.Seccode == null &&
+                    TaskInfo.Solution.Validate == null)
                 {
                     DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
 

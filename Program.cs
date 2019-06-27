@@ -15,6 +15,8 @@ namespace Anticaptcha_example
             ExampleNoCaptcha();
             ExampleCustomCaptcha();
             ExampleFunCaptcha();
+            ExampleRecaptchaV3Proxyless();
+            ExampleGeeTestProxyless();
 
             Console.ReadKey();
         }
@@ -34,6 +36,52 @@ namespace Anticaptcha_example
                 DebugHelper.Out("GetBalance() failed. " + api.ErrorMessage, DebugHelper.Type.Error);
             else
                 DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleRecaptchaV3Proxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new RecaptchaV3Proxyless
+            {
+                ClientKey = "1234567890123456789012",
+                WebsiteUrl = new Uri("http://www.supremenewyork.com"),
+                WebsiteKey = "6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD",
+                PageAction = "testPageAction"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleGeeTestProxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            // website key ("gt") and "challenge" for testing you can get here: https://auth.geetest.com/api/init_captcha?time=1561554686474
+            // you need to get a new "challenge" each time
+            var api = new GeeTestProxyless()
+            {
+                ClientKey = "1234567890123456789012",
+                WebsiteUrl = new Uri("http://www.supremenewyork.com"),
+                WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442",
+                WebsiteChallenge = "169acd4a58f2c99770322dfa5270c221"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+            {
+                DebugHelper.Out("Result CHALLENGE: " + api.GetTaskSolution().Challenge, DebugHelper.Type.Success);
+                DebugHelper.Out("Result SECCODE: " + api.GetTaskSolution().Seccode, DebugHelper.Type.Success);
+                DebugHelper.Out("Result VALIDATE: " + api.GetTaskSolution().Validate, DebugHelper.Type.Success);
+            }
         }
 
         private static void ExampleImageToText()

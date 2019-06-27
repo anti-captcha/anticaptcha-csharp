@@ -38,7 +38,10 @@ namespace Anticaptcha_example.ApiResponse
                             GRecaptchaResponseMd5 =
                                 JsonHelper.ExtractStr(json, "solution", "gRecaptchaResponseMd5", silent: true),
                             Text = JsonHelper.ExtractStr(json, "solution", "text", silent: true),
-                            Url = JsonHelper.ExtractStr(json, "solution", "url", silent: true)
+                            Url = JsonHelper.ExtractStr(json, "solution", "url", silent: true),
+                            Challenge = JsonHelper.ExtractStr(json, "solution", "challenge", silent: true),
+                            Seccode = JsonHelper.ExtractStr(json, "solution", "seccode", silent: true),
+                            Validate = JsonHelper.ExtractStr(json, "solution", "validate", silent: true),
                         };
 
                         try
@@ -51,7 +54,8 @@ namespace Anticaptcha_example.ApiResponse
                         }
 
                         if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null
-                            && Solution.Token == null)
+                            && Solution.Token == null && Solution.Challenge == null && Solution.Seccode == null &&
+                            Solution.Validate == null)
                             DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
                     }
                 }
@@ -123,6 +127,9 @@ namespace Anticaptcha_example.ApiResponse
             public string Text { get; internal set; } // Will be available for ImageToText tasks only!
             public string Url { get; internal set; }
             public string Token { get; internal set; } // Will be available for FunCaptcha tasks only!
+            public string Challenge; // Will be available for GeeTest tasks only
+            public string Seccode; // Will be available for GeeTest tasks only
+            public string Validate; // Will be available for GeeTest tasks only
         }
     }
 }
