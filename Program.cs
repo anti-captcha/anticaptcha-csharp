@@ -11,6 +11,8 @@ namespace Anticaptcha_example
         {
             ExampleGetBalance();
             ExampleImageToText();
+            ExampleSquare();
+            ExampleHCaptchaProxyless();
             ExampleNoCaptchaProxyless();
             ExampleNoCaptcha();
             ExampleCustomCaptcha();
@@ -102,6 +104,36 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Result: " + api.GetTaskSolution().Text, DebugHelper.Type.Success);
         }
 
+        private static void ExampleSquare()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new SquareCaptcha
+            {
+                ClientKey = "1234567890123456789012",
+                FilePath = "square.jpg",
+                ObjectName = "FISH AND HOUSE / РЫБА И ДОМ",
+                ColumnsCount = 4,
+                RowsCount = 4
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+            {
+                string result = "";
+
+                foreach (int cellNumber in api.GetTaskSolution().CellNumbers)
+                {
+                    result += cellNumber + " ";
+                }
+
+                DebugHelper.Out("Result cell numbers (starting 0): " + result, DebugHelper.Type.Success);
+            }
+        }
+
         private static void ExampleNoCaptchaProxyless()
         {
             DebugHelper.VerboseMode = true;
@@ -111,6 +143,25 @@ namespace Anticaptcha_example
                 ClientKey = "1234567890123456789012",
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleHCaptchaProxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new HCaptchaProxyless
+            {
+                ClientKey = "1234567890123456789012",
+                WebsiteUrl = new Uri("http://democaptcha.com/"),
+                WebsiteKey = "51829642-2cda-4b09-896c-594f89d700cc"
             };
 
             if (!api.CreateTask())

@@ -53,8 +53,11 @@
     <Compile Include="Api\CustomCaptcha.cs" />
     <Compile Include="Api\FunCaptcha.cs" />
     <Compile Include="Api\GeeTestProxyless.cs" />
+    <Compile Include="Api\HCaptcha.cs" />
+    <Compile Include="Api\HCaptchaProxyless.cs" />
     <Compile Include="Api\NoCaptcha.cs" />
     <Compile Include="Api\RecaptchaV3Proxyless.cs" />
+    <Compile Include="Api\SquareCaptcha.cs" />
     <Compile Include="Helper\DebugHelper.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
     <Compile Include="Helper\StringHelper.cs" />

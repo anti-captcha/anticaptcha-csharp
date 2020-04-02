@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Anticaptcha_example.Helper;
 using Newtonsoft.Json.Linq;
@@ -46,6 +47,15 @@ namespace Anticaptcha_example.ApiResponse
 
                         try
                         {
+                            Solution.CellNumbers = json["solution"]["cellNumbers"].ToObject<List<int>>();
+                        }
+                        catch
+                        {
+                            Solution.CellNumbers = new List<int>();
+                        }
+
+                        try
+                        {
                             Solution.Answers = json.solution.answers;
                         }
                         catch
@@ -55,7 +65,7 @@ namespace Anticaptcha_example.ApiResponse
 
                         if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null
                             && Solution.Token == null && Solution.Challenge == null && Solution.Seccode == null &&
-                            Solution.Validate == null)
+                            Solution.Validate == null && Solution.CellNumbers.Count == 0)
                             DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
                     }
                 }
@@ -130,6 +140,7 @@ namespace Anticaptcha_example.ApiResponse
             public string Challenge; // Will be available for GeeTest tasks only
             public string Seccode; // Will be available for GeeTest tasks only
             public string Validate; // Will be available for GeeTest tasks only
+            public List<int> CellNumbers = new List<int>(); // Will be available for Square tasks only
         }
     }
 }
