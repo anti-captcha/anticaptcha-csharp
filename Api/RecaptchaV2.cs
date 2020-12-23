@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example.Api
 {
-    public class NoCaptcha : NoCaptchaProxyless
+    public class RecaptchaV2 : RecaptchaV2Proxyless
     {
         public string Cookies { protected get; set; }
         public string ProxyLogin { protected get; set; }
@@ -16,7 +16,7 @@ namespace Anticaptcha_example.Api
         public override JObject GetPostData()
         {
             var postData = base.GetPostData();
-            postData["type"] = "NoCaptchaTask";
+            postData["type"] = "RecaptchaV2Task";
 
             if (ProxyType == null || ProxyPort == null || ProxyPort < 1 || ProxyPort > 65535 ||
                 string.IsNullOrEmpty(ProxyAddress))

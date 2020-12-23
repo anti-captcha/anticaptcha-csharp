@@ -55,7 +55,7 @@
     <Compile Include="Api\GeeTestProxyless.cs" />
     <Compile Include="Api\HCaptcha.cs" />
     <Compile Include="Api\HCaptchaProxyless.cs" />
-    <Compile Include="Api\NoCaptcha.cs" />
+    <Compile Include="Api\RecaptchaV2.cs" />
     <Compile Include="Api\RecaptchaV3Proxyless.cs" />
     <Compile Include="Api\SquareCaptcha.cs" />
     <Compile Include="Helper\DebugHelper.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="AnticaptchaBase.cs" />
     <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="Api\ImageToText.cs" />
-    <Compile Include="Api\NoCaptchaProxyless.cs" />
+    <Compile Include="Api\RecaptchaV2Proxyless.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApiResponse\TaskResultResponse.cs" />

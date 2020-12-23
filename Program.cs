@@ -7,14 +7,16 @@ namespace Anticaptcha_example
 {
     internal class Program
     {
+        private const string ClientKey = "1234567890";
+
         private static void Main()
         {
             ExampleGetBalance();
             ExampleImageToText();
             ExampleSquare();
             ExampleHCaptchaProxyless();
-            ExampleNoCaptchaProxyless();
-            ExampleNoCaptcha();
+            ExampleRecaptcha2Proxyless();
+            ExampleRecaptcha2();
             ExampleCustomCaptcha();
             ExampleFunCaptcha();
             ExampleRecaptchaV3Proxyless();
@@ -29,7 +31,7 @@ namespace Anticaptcha_example
 
             var api = new ImageToText
             {
-                ClientKey = "1234567890123456789012"
+                ClientKey = ClientKey
             };
 
             var balance = api.GetBalance();
@@ -46,7 +48,7 @@ namespace Anticaptcha_example
 
             var api = new RecaptchaV3Proxyless
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD",
                 PageAction = "testPageAction"
@@ -68,7 +70,7 @@ namespace Anticaptcha_example
             // you need to get a new "challenge" each time
             var api = new GeeTestProxyless()
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442",
                 WebsiteChallenge = "169acd4a58f2c99770322dfa5270c221"
@@ -92,7 +94,7 @@ namespace Anticaptcha_example
 
             var api = new ImageToText
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 FilePath = "captcha.jpg"
             };
 
@@ -110,7 +112,7 @@ namespace Anticaptcha_example
 
             var api = new SquareCaptcha
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 FilePath = "square.jpg",
                 ObjectName = "FISH AND HOUSE / РЫБА И ДОМ",
                 ColumnsCount = 4,
@@ -134,13 +136,13 @@ namespace Anticaptcha_example
             }
         }
 
-        private static void ExampleNoCaptchaProxyless()
+        private static void ExampleRecaptcha2Proxyless()
         {
             DebugHelper.VerboseMode = true;
 
-            var api = new NoCaptchaProxyless
+            var api = new RecaptchaV2Proxyless
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16"
             };
@@ -159,7 +161,7 @@ namespace Anticaptcha_example
 
             var api = new HCaptchaProxyless
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://democaptcha.com/"),
                 WebsiteKey = "51829642-2cda-4b09-896c-594f89d700cc"
             };
@@ -172,13 +174,13 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
         }
 
-        private static void ExampleNoCaptcha()
+        private static void ExampleRecaptcha2()
         {
             DebugHelper.VerboseMode = true;
 
-            var api = new NoCaptcha
+            var api = new RecaptchaV2
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16",
                 UserAgent =
@@ -206,7 +208,7 @@ namespace Anticaptcha_example
 
             var api = new CustomCaptcha
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 // random here to let the same task to be assigned to the same workers
                 ImageUrl = "https://files.anti-captcha.com/26/41f/c23/7c50ff19.jpg?random=" + randInt,
                 Assignment = "Enter the licence plate number",
@@ -276,7 +278,7 @@ namespace Anticaptcha_example
 
             var api = new FunCaptcha
             {
-                ClientKey = "1234567890123456789012",
+                ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://http.myjino.ru/funcaptcha_test/"),
                 WebsitePublicKey = "DE0B0BB7-1EE4-4D70-1853-31B835D4506B",
                 UserAgent =
