@@ -190,6 +190,9 @@ namespace Anticaptcha_example
                 WebsiteKey = "6LdIFr0ZAAAAAO3vz0O0OQrtAefzdJcWQM2TMYQH"
             };
 
+            api.EnterprisePayload.Add("test", "qwerty");
+            api.EnterprisePayload.Add("secret", "AB_12345");
+
             if (!api.CreateTask())
                 DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
             else if (!api.WaitForResult())
@@ -216,6 +219,9 @@ namespace Anticaptcha_example
                 ProxyLogin = "amanchik",
                 ProxyPassword = "qwerty123"
             };
+
+            api.EnterprisePayload.Add("test", "qwerty");
+            api.EnterprisePayload.Add("secret", "AB_12345");
 
             if (!api.CreateTask())
                 DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);

@@ -1,6 +1,7 @@
 ﻿using Anticaptcha_example.ApiResponse;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace Anticaptcha_example.Api
 {
@@ -8,17 +9,23 @@ namespace Anticaptcha_example.Api
     {
         public Uri WebsiteUrl { protected get; set; }
         public string WebsiteKey { protected get; set; }
-        public string EnterprisePayload { protected get; set; }
+        public Dictionary<string, string> EnterprisePayload = new Dictionary<string, string>();
 
         public override JObject GetPostData()
         {
-            return new JObject
+            var jsonObject = new JObject
             {
                 {"type", "RecaptchaV2EnterpriseTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
-                {"websiteKey", WebsiteKey},
-                {"enterprisePayload", EnterprisePayload}
+                {"websiteKey", WebsiteKey}
             };
+
+            if (EnterprisePayload.Count > 0)
+            {
+                jsonObject["enterprisePayload"] = JObject.FromObject(EnterprisePayload);
+            }
+
+            return jsonObject;
         }
 
         public TaskResultResponse.SolutionData GetTaskSolution()

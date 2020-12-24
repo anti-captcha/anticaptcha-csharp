@@ -35,8 +35,8 @@ namespace Anticaptcha_example
                 return false;
             }
 
-            // if you need to see the raw JSON request
-            // DebugHelper.Out(taskJson.ToString());
+            // if you don't need to see the raw JSON request - comment the next line out
+            DebugHelper.Out(taskJson.ToString(), DebugHelper.Type.Info);
 
             var jsonPostData = new JObject();
             jsonPostData["clientKey"] = ClientKey;
