@@ -7,19 +7,22 @@ namespace Anticaptcha_example
 {
     internal class Program
     {
-        private const string ClientKey = "1234567890";
+        private const string ClientKey = "e3379104a50158e3379104a50158";
 
         private static void Main()
         {
             ExampleGetBalance();
             ExampleImageToText();
+            ExampleRecaptcha2EnterpriseProxyless();
+            ExampleRecaptcha2Enterprise();
+            ExampleRecaptchaV3EnterpriseProxyless();
             ExampleSquare();
             ExampleHCaptchaProxyless();
             ExampleRecaptcha2Proxyless();
             ExampleRecaptcha2();
+            ExampleRecaptchaV3Proxyless();
             ExampleCustomCaptcha();
             ExampleFunCaptcha();
-            ExampleRecaptchaV3Proxyless();
             ExampleGeeTestProxyless();
 
             Console.ReadKey();
@@ -42,6 +45,26 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
         }
 
+        private static void ExampleRecaptchaV3EnterpriseProxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new RecaptchaV3Proxyless
+            {
+                ClientKey = ClientKey,
+                WebsiteUrl = new Uri("https://www.netflix.com/login"),
+                WebsiteKey = "6Lf8hrcUAAAAAIpQAFW2VFjtiYnThOjZOA5xvLyR",
+                IsEnterprise = true
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
         private static void ExampleRecaptchaV3Proxyless()
         {
             DebugHelper.VerboseMode = true;
@@ -51,7 +74,8 @@ namespace Anticaptcha_example
                 ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD",
-                PageAction = "testPageAction"
+                PageAction = "testPageAction",
+                IsEnterprise = false
             };
 
             if (!api.CreateTask())
@@ -145,6 +169,52 @@ namespace Anticaptcha_example
                 ClientKey = ClientKey,
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleRecaptcha2EnterpriseProxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new RecaptchaV2EnterpriseProxyless
+            {
+                ClientKey = ClientKey,
+                WebsiteUrl = new Uri("https://store.steampowered.com/join"),
+                WebsiteKey = "6LdIFr0ZAAAAAO3vz0O0OQrtAefzdJcWQM2TMYQH"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleRecaptcha2Enterprise()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new RecaptchaV2Enterprise
+            {
+                ClientKey = ClientKey,
+                WebsiteUrl = new Uri("https://store.steampowered.com/join"),
+                WebsiteKey = "6LdIFr0ZAAAAAO3vz0O0OQrtAefzdJcWQM2TMYQH",
+                UserAgent =
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
+                // proxy access parameters
+                ProxyType = AnticaptchaBase.ProxyTypeOption.Socks5,
+                ProxyAddress = "8.8.8.8",
+                ProxyPort = 3129,
+                ProxyLogin = "amanchik",
+                ProxyPassword = "qwerty123"
             };
 
             if (!api.CreateTask())

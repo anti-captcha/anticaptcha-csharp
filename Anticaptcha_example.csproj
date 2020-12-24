@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="ApiResponse\BalanceResponse.cs" />
     <Compile Include="ApiResponse\CreateTaskResponse.cs" />
+    <Compile Include="Api\RecaptchaV2Enterprise.cs" />
+    <Compile Include="Api\RecaptchaV2EnterpriseProxyless.cs" />
     <Compile Include="Api\CustomCaptcha.cs" />
     <Compile Include="Api\FunCaptcha.cs" />
     <Compile Include="Api\GeeTestProxyless.cs" />

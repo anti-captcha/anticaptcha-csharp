@@ -35,6 +35,9 @@ namespace Anticaptcha_example
                 return false;
             }
 
+            // if you need to see the raw JSON request
+            // DebugHelper.Out(taskJson.ToString());
+
             var jsonPostData = new JObject();
             jsonPostData["clientKey"] = ClientKey;
             jsonPostData["task"] = taskJson;
@@ -70,7 +73,7 @@ namespace Anticaptcha_example
                 return false;
             }
 
-            TaskId = (int) response.TaskId;
+            TaskId = (int)response.TaskId;
             DebugHelper.Out("Task ID: " + TaskId, DebugHelper.Type.Success);
 
             return true;

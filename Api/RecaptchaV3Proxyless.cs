@@ -10,6 +10,7 @@ namespace Anticaptcha_example.Api
         public Uri WebsiteUrl { protected get; set; }
         public string WebsiteKey { protected get; set; }
         public string PageAction { protected get; set; }
+        public bool IsEnterprise { protected get; set; }
         private double _minScore = 0.3;
 
         public double MinScore
@@ -39,7 +40,8 @@ namespace Anticaptcha_example.Api
                 {"websiteURL", WebsiteUrl},
                 {"websiteKey", WebsiteKey},
                 {"pageAction", PageAction},
-                {"minScore", MinScore}
+                {"minScore", MinScore},
+                {"isEnterprise", IsEnterprise }
             };
         }
 
