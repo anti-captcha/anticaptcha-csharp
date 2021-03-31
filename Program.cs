@@ -16,12 +16,10 @@ namespace Anticaptcha_example
             ExampleRecaptcha2EnterpriseProxyless();
             ExampleRecaptcha2Enterprise();
             ExampleRecaptchaV3EnterpriseProxyless();
-            ExampleSquare();
             ExampleHCaptchaProxyless();
             ExampleRecaptcha2Proxyless();
             ExampleRecaptcha2();
             ExampleRecaptchaV3Proxyless();
-            ExampleCustomCaptcha();
             ExampleFunCaptcha();
             ExampleGeeTestProxyless();
 
@@ -128,36 +126,6 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
             else
                 DebugHelper.Out("Result: " + api.GetTaskSolution().Text, DebugHelper.Type.Success);
-        }
-
-        private static void ExampleSquare()
-        {
-            DebugHelper.VerboseMode = true;
-
-            var api = new SquareCaptcha
-            {
-                ClientKey = ClientKey,
-                FilePath = "square.jpg",
-                ObjectName = "FISH AND HOUSE / РЫБА И ДОМ",
-                ColumnsCount = 4,
-                RowsCount = 4
-            };
-
-            if (!api.CreateTask())
-                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
-            else if (!api.WaitForResult())
-                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
-            else
-            {
-                string result = "";
-
-                foreach (int cellNumber in api.GetTaskSolution().CellNumbers)
-                {
-                    result += cellNumber + " ";
-                }
-
-                DebugHelper.Out("Result cell numbers (starting 0): " + result, DebugHelper.Type.Success);
-            }
         }
 
         private static void ExampleRecaptcha2Proxyless()
@@ -275,77 +243,6 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
             else
                 DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
-        }
-
-        private static void ExampleCustomCaptcha()
-        {
-            DebugHelper.VerboseMode = true;
-            var randInt = new Random().Next(0, 10000);
-
-            var api = new CustomCaptcha
-            {
-                ClientKey = ClientKey,
-                // random here to let the same task to be assigned to the same workers
-                ImageUrl = "https://files.anti-captcha.com/26/41f/c23/7c50ff19.jpg?random=" + randInt,
-                Assignment = "Enter the licence plate number",
-                Forms = new JArray
-                {
-                    new JObject
-                    {
-                        {"label", "Number"},
-                        {"labelHint", false},
-                        {"contentType", false},
-                        {"name", "license_plate"},
-                        {"inputType", "text"},
-                        {
-                            "inputOptions", new JObject
-                            {
-                                {"width", "100"},
-                                {"placeHolder", "Enter letters and numbers without spaces"}
-                            }
-                        }
-                    },
-                    new JObject
-                    {
-                        {"label", "Car color"},
-                        {"labelHint", "Select the car color"},
-                        {"contentType", false},
-                        {"name", "color"},
-                        {"inputType", "select"},
-                        {
-                            "inputOptions", new JArray
-                            {
-                                new JObject
-                                {
-                                    {"value", "white"},
-                                    {"caption", "White color"}
-                                },
-                                new JObject
-                                {
-                                    {"value", "black"},
-                                    {"caption", "Black color"}
-                                },
-                                new JObject
-                                {
-                                    {"value", "gray"},
-                                    {"caption", "Gray color"}
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            if (!api.CreateTask())
-                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
-            else if (!api.WaitForResult())
-                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
-            else
-                foreach (var answer in api.GetTaskSolution().Answers)
-                    DebugHelper.Out(
-                        "The answer for the question '" + answer.Key + "' : " + answer.Value,
-                        DebugHelper.Type.Success
-                    );
         }
 
         private static void ExampleFunCaptcha()
