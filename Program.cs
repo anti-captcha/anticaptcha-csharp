@@ -12,6 +12,7 @@ namespace Anticaptcha_example
         private static void Main()
         {
             ExampleGetBalance();
+            ExampleAntiGateTask();
             ExampleImageToText();
             ExampleRecaptcha2EnterpriseProxyless();
             ExampleRecaptcha2Enterprise();
@@ -42,6 +43,52 @@ namespace Anticaptcha_example
             else
                 DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
         }
+
+        private static void ExampleAntiGateTask()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new AntiGateTask
+            {
+                ClientKey = ClientKey,
+                WebsiteUrl = new Uri("http://antigate.com/logintest.php"),
+                TemplateName = "Sign-in and wait for control text",
+                Variables = new JObject
+                {
+                    {"login_input_css", "#login"},
+                    {"login_input_value", "the login"},
+                    {"password_input_css", "#password"},
+                    {"password_input_value", "the password"},
+                    {"control_text", "You have been logged successfully"},
+                }
+            };
+
+            //            api.ProxyAddress = "194.67.219.51";
+            //            api.ProxyPort = 9736;
+            //            api.ProxyLogin = "7Szw7f";
+            //            api.ProxyPassword = "63HX4n";
+
+            if (!api.CreateTask())
+            {
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            }
+            else if (!api.WaitForResult())
+            {
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            }
+            else
+            {
+                DebugHelper.Out("Cookies: ", DebugHelper.Type.Success);
+                DebugHelper.Out(api.GetTaskSolution().Cookies.ToString(), DebugHelper.Type.Success);
+                DebugHelper.Out("localStorage: ", DebugHelper.Type.Success);
+                DebugHelper.Out(api.GetTaskSolution().LocalStorage.ToString(), DebugHelper.Type.Success);
+                DebugHelper.Out("fingerprint: ", DebugHelper.Type.Success);
+                DebugHelper.Out(api.GetTaskSolution().Fingerprint.ToString(), DebugHelper.Type.Success);
+                DebugHelper.Out("url: ", DebugHelper.Type.Success);
+                DebugHelper.Out(api.GetTaskSolution().Url, DebugHelper.Type.Success);
+            }
+        }
+
 
         private static void ExampleRecaptchaV3EnterpriseProxyless()
         {

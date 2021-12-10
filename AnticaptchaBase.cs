@@ -100,9 +100,11 @@ namespace Anticaptcha_example
 
             DebugHelper.Out("Requesting the task status", DebugHelper.Type.Info);
 
-            var jsonPostData = new JObject();
-            jsonPostData["clientKey"] = ClientKey;
-            jsonPostData["taskId"] = TaskId;
+            var jsonPostData = new JObject
+            {
+                ["clientKey"] = ClientKey,
+                ["taskId"] = TaskId
+            };
 
             dynamic postResult = JsonPostRequest(ApiMethod.GetTaskResult, jsonPostData);
 
@@ -136,7 +138,9 @@ namespace Anticaptcha_example
                 if (TaskInfo.Solution.GRecaptchaResponse == null && TaskInfo.Solution.Text == null
                     && TaskInfo.Solution.Answers == null && TaskInfo.Solution.Token == null &&
                     TaskInfo.Solution.Challenge == null && TaskInfo.Solution.Seccode == null &&
-                    TaskInfo.Solution.Validate == null && TaskInfo.Solution.CellNumbers.Count == 0)
+                    TaskInfo.Solution.Validate == null && TaskInfo.Solution.CellNumbers.Count == 0
+                    && TaskInfo.Solution.LocalStorage == null && TaskInfo.Solution.Cookies == null
+                    && TaskInfo.Solution.Fingerprint == null)
                 {
                     DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
 
@@ -166,12 +170,20 @@ namespace Anticaptcha_example
             );
 
             if (string.IsNullOrEmpty(error))
+            {
                 if (data == null)
+                {
                     error = "Got empty or invalid response from API";
+                }
                 else
+                {
                     return data;
+                }
+            }
             else
+            {
                 error = "HTTP or JSON error: " + error;
+            }
 
             DebugHelper.Out(error, DebugHelper.Type.Error);
 

@@ -43,6 +43,10 @@ namespace Anticaptcha_example.ApiResponse
                             Challenge = JsonHelper.ExtractStr(json, "solution", "challenge", silent: true),
                             Seccode = JsonHelper.ExtractStr(json, "solution", "seccode", silent: true),
                             Validate = JsonHelper.ExtractStr(json, "solution", "validate", silent: true),
+                            Cookies = json["solution"]["cookies"],
+                            LocalStorage = json["solution"]["localStorage"],
+                            Fingerprint = json["solution"]["fingerprint"],
+                            Domain = JsonHelper.ExtractStr(json, "solution", "domain", silent: true),
                         };
 
                         try
@@ -65,8 +69,11 @@ namespace Anticaptcha_example.ApiResponse
 
                         if (Solution.GRecaptchaResponse == null && Solution.Text == null && Solution.Answers == null
                             && Solution.Token == null && Solution.Challenge == null && Solution.Seccode == null &&
-                            Solution.Validate == null && Solution.CellNumbers.Count == 0)
+                            Solution.Validate == null && Solution.CellNumbers.Count == 0 && Solution.LocalStorage == null
+                            && Solution.Cookies == null && Solution.Fingerprint == null)
+                        {
                             DebugHelper.Out("Got no 'solution' field from API", DebugHelper.Type.Error);
+                        }
                     }
                 }
                 else
@@ -77,7 +84,9 @@ namespace Anticaptcha_example.ApiResponse
                     DebugHelper.Out(ErrorDescription, DebugHelper.Type.Error);
                 }
             else
+            {
                 DebugHelper.Out("Unknown error", DebugHelper.Type.Error);
+            }
         }
 
         public int? ErrorId { get; }
@@ -107,7 +116,7 @@ namespace Anticaptcha_example.ApiResponse
 
             try
             {
-                return (StatusType) Enum.Parse(
+                return (StatusType)Enum.Parse(
                     typeof(StatusType),
                     CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status),
                     true
@@ -126,7 +135,7 @@ namespace Anticaptcha_example.ApiResponse
 
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-            return dtDateTime.AddSeconds((double) unixTimeStamp).ToUniversalTime();
+            return dtDateTime.AddSeconds((double)unixTimeStamp).ToUniversalTime();
         }
 
         public class SolutionData
@@ -135,12 +144,17 @@ namespace Anticaptcha_example.ApiResponse
             public string GRecaptchaResponse { get; internal set; } // Will be available for Recaptcha tasks only!
             public string GRecaptchaResponseMd5 { get; internal set; } // for Recaptcha with isExtended=true property
             public string Text { get; internal set; } // Will be available for ImageToText tasks only!
-            public string Url { get; internal set; }
+            public string Url { get; internal set; } // Will be available for AntiGate tasks
             public string Token { get; internal set; } // Will be available for FunCaptcha tasks only!
             public string Challenge; // Will be available for GeeTest tasks only
             public string Seccode; // Will be available for GeeTest tasks only
             public string Validate; // Will be available for GeeTest tasks only
             public List<int> CellNumbers = new List<int>(); // Will be available for Square tasks only
+
+            public JObject Cookies { get; set; }
+            public JObject LocalStorage { get; set; }
+            public JObject Fingerprint { get; set; }
+            public string Domain { get; set; }
         }
     }
 }

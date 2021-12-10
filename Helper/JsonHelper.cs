@@ -14,12 +14,16 @@ namespace Anticaptcha_example.Helper
                 object result = json[firstLevel];
 
                 if (result != null && secondLevel != null)
+                {
                     result = json[firstLevel][secondLevel];
+                }
 
                 if (result == null)
                 {
                     if (!silent)
+                    {
                         DebugHelper.JsonFieldParseError(path, json);
+                    }
 
                     return null;
                 }
@@ -29,7 +33,9 @@ namespace Anticaptcha_example.Helper
             catch
             {
                 if (!silent)
+                {
                     DebugHelper.JsonFieldParseError(path, json);
+                }
 
                 return null;
             }

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ApiResponse\BalanceResponse.cs" />
     <Compile Include="ApiResponse\CreateTaskResponse.cs" />
+    <Compile Include="Api\AntiGateTask.cs" />
     <Compile Include="Api\RecaptchaV2Enterprise.cs" />
     <Compile Include="Api\RecaptchaV2EnterpriseProxyless.cs" />
     <Compile Include="Api\FunCaptcha.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Api\HCaptchaProxyless.cs" />
     <Compile Include="Api\RecaptchaV2.cs" />
     <Compile Include="Api\RecaptchaV3Proxyless.cs" />
-    <Compile Include="Api\SquareCaptcha.cs" />
     <Compile Include="Helper\DebugHelper.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
     <Compile Include="Helper\StringHelper.cs" />
