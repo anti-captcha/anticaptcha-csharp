@@ -288,6 +288,9 @@ namespace Anticaptcha_example
                 UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116"
             };
 
+            // use to set invisible mode
+            //api.IsInvisible = true
+
             // use to set Hcaptcha Enterprise parameters like rqdata, sentry, apiEndpoint, endpoint, reportapi, assethost, imghost
             //api.EnterprisePayload.Add("rqdata", "rqdata value from target website");
             //api.EnterprisePayload.Add("sentry", "true");
@@ -318,6 +321,10 @@ namespace Anticaptcha_example
                 ProxyLogin = "123",
                 ProxyPassword = "456"
             };
+
+            // Use to set Recaptcha V2-invisible mode.
+            // Note that V2-invisible and V3 are different captchas!
+            //api.IsInvisible = true;
 
             if (!api.CreateTask())
                 DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);

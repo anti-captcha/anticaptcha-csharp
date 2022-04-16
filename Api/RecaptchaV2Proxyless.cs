@@ -9,6 +9,8 @@ namespace Anticaptcha_example.Api
         public Uri WebsiteUrl { protected get; set; }
         public string WebsiteKey { protected get; set; }
         public string WebsiteSToken { protected get; set; }
+        public bool IsInvisible { protected get; set; }
+        public string DataSValue { protected get; set; }
 
         public override JObject GetPostData()
         {
@@ -17,7 +19,9 @@ namespace Anticaptcha_example.Api
                 {"type", "RecaptchaV2TaskProxyless"},
                 {"websiteURL", WebsiteUrl},
                 {"websiteKey", WebsiteKey},
-                {"websiteSToken", WebsiteSToken}
+                {"websiteSToken", WebsiteSToken},
+                {"recaptchaDataSValue", DataSValue},
+                {"isInvisible", IsInvisible}
             };
         }
 

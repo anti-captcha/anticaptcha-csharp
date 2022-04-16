@@ -12,7 +12,6 @@ namespace Anticaptcha_example.Api
         public string ProxyPassword { protected get; set; }
         public string UserAgent { protected get; set; }
         public string Cookies { protected get; set; }
-        public Dictionary<string, string> EnterprisePayload = new Dictionary<string, string>();
 
         public override JObject GetPostData()
         {
@@ -35,11 +34,6 @@ namespace Anticaptcha_example.Api
             postData.Add("userAgent", UserAgent);
             postData.Add("cookies", Cookies);
 
-            if (EnterprisePayload.Count > 0)
-            {
-                jsonObject["enterprisePayload"] = JObject.FromObject(EnterprisePayload);
-            }
-            
             return postData;
         }
     }
