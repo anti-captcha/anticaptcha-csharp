@@ -8,15 +8,25 @@ namespace Anticaptcha_example.Api
     {
         public Uri WebsiteUrl { protected get; set; }
         public string WebsiteKey { protected get; set; }
+        public string UserAgent { protected get; set; }
+        public Dictionary<string, string> EnterprisePayload = new Dictionary<string, string>();
 
         public override JObject GetPostData()
         {
-            return new JObject
+            var jsonObject = new JObject
             {
                 {"type", "HCaptchaTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
                 {"websiteKey", WebsiteKey},
+                {"userAgent", UserAgent},
             };
+
+            if (EnterprisePayload.Count > 0)
+            {
+                jsonObject["enterprisePayload"] = JObject.FromObject(EnterprisePayload);
+            }
+
+            return jsonObject;
         }
 
         public TaskResultResponse.SolutionData GetTaskSolution()
