@@ -9,6 +9,7 @@ namespace Anticaptcha_example.Api
         public Uri WebsiteUrl { protected get; set; }
         public string TemplateName { protected get; set; }
         public JObject Variables { protected get; set; }
+        public JObject DomainsOfInterest { protected get; set; }
         public string ProxyAddress { protected get; set; }
         public int ProxyPort { protected get; set; }
         public string ProxyLogin { protected get; set; }
@@ -38,6 +39,11 @@ namespace Anticaptcha_example.Api
             if (Variables != null)
             {
                 postData["variables"] = Variables;
+            }
+
+            if (DomainsOfInterest != null)
+            {
+                postData["domainsOfInterest"] = DomainsOfInterest;
             }
 
             return postData;
