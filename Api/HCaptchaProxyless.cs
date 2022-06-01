@@ -1,6 +1,7 @@
 ﻿using System;
 using Anticaptcha_example.ApiResponse;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Anticaptcha_example.Api
 {

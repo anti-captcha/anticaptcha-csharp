@@ -1,6 +1,7 @@
 ﻿using System;
 using Anticaptcha_example.ApiResponse;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Anticaptcha_example.Api
 {
@@ -27,7 +28,7 @@ namespace Anticaptcha_example.Api
             }
             if (initParameters.Count > 0)
             {
-                jsonObject["initParameters"] = JObject.FromObject(initParameters);
+                postData["initParameters"] = JObject.FromObject(initParameters);
             }
 
             return postData;

@@ -51,6 +51,7 @@
     <Compile Include="ApiResponse\BalanceResponse.cs" />
     <Compile Include="ApiResponse\CreateTaskResponse.cs" />
     <Compile Include="Api\AntiGateTask.cs" />
+    <Compile Include="Api\GeeTestV4Proxyless.cs" />
     <Compile Include="Api\RecaptchaV2Enterprise.cs" />
     <Compile Include="Api\RecaptchaV2EnterpriseProxyless.cs" />
     <Compile Include="Api\FunCaptcha.cs" />
