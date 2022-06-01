@@ -34,7 +34,11 @@ namespace Anticaptcha_example
 
             var api = new ImageToText
             {
-                ClientKey = ClientKey
+                ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
             };
 
             var balance = api.GetBalance();
@@ -52,6 +56,10 @@ namespace Anticaptcha_example
             var api = new AntiGateTask
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://antigate.com/logintest.php"),
                 TemplateName = "Sign-in and wait for control text",
                 Variables = new JObject
@@ -98,6 +106,10 @@ namespace Anticaptcha_example
             var api = new RecaptchaV3Proxyless
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("https://www.netflix.com/login"),
                 WebsiteKey = "6Lf8hrcUAAAAAIpQAFW2VFjtiYnThOjZOA5xvLyR",
                 IsEnterprise = true
@@ -118,6 +130,10 @@ namespace Anticaptcha_example
             var api = new RecaptchaV3Proxyless
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD",
                 PageAction = "testPageAction",
@@ -141,6 +157,10 @@ namespace Anticaptcha_example
             var api = new GeeTestProxyless()
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442",
                 WebsiteChallenge = "169acd4a58f2c99770322dfa5270c221"
@@ -167,6 +187,10 @@ namespace Anticaptcha_example
             var api = new GeeTestV4Proxyless()
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442"
             };
@@ -194,6 +218,10 @@ namespace Anticaptcha_example
             var api = new ImageToText
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 FilePath = "captcha.jpg"
             };
 
@@ -212,6 +240,10 @@ namespace Anticaptcha_example
             var api = new RecaptchaV2Proxyless
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16"
             };
@@ -231,6 +263,10 @@ namespace Anticaptcha_example
             var api = new RecaptchaV2EnterpriseProxyless
             {
                 ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
                 WebsiteUrl = new Uri("https://store.steampowered.com/join"),
                 WebsiteKey = "6LdIFr0ZAAAAAO3vz0O0OQrtAefzdJcWQM2TMYQH"
             };
@@ -253,6 +289,7 @@ namespace Anticaptcha_example
             var api = new RecaptchaV2Enterprise
             {
                 ClientKey = ClientKey,
+                SoftId = 0,
                 WebsiteUrl = new Uri("https://store.steampowered.com/join"),
                 WebsiteKey = "6LdIFr0ZAAAAAO3vz0O0OQrtAefzdJcWQM2TMYQH",
                 UserAgent =
@@ -283,6 +320,7 @@ namespace Anticaptcha_example
             var api = new HCaptchaProxyless
             {
                 ClientKey = ClientKey,
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://democaptcha.com/"),
                 WebsiteKey = "51829642-2cda-4b09-896c-594f89d700cc",
                 UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116"
@@ -310,6 +348,7 @@ namespace Anticaptcha_example
             var api = new RecaptchaV2
             {
                 ClientKey = ClientKey,
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://http.myjino.ru/recaptcha/test-get.php"),
                 WebsiteKey = "6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16",
                 UserAgent =
@@ -341,6 +380,7 @@ namespace Anticaptcha_example
             var api = new FunCaptcha
             {
                 ClientKey = ClientKey,
+                SoftId = 0,
                 WebsiteUrl = new Uri("http://http.myjino.ru/funcaptcha_test/"),
                 WebsitePublicKey = "DE0B0BB7-1EE4-4D70-1853-31B835D4506B",
                 UserAgent =

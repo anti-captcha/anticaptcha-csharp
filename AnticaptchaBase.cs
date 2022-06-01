@@ -24,6 +24,13 @@ namespace Anticaptcha_example
         public TaskResultResponse TaskInfo { get; protected set; }
         public abstract JObject GetPostData();
 
+        /// <summary>
+        /// Specify softId to earn 10% commission with your app.
+        /// Get your softId here:
+        /// https://anti-captcha.com/clients/tools/devcenter
+        /// </summary>
+        public int SoftId { set; private get; }
+
         public bool CreateTask()
         {
             var taskJson = GetPostData();
@@ -40,6 +47,7 @@ namespace Anticaptcha_example
 
             var jsonPostData = new JObject();
             jsonPostData["clientKey"] = ClientKey;
+            jsonPostData["softId"] = SoftId;
             jsonPostData["task"] = taskJson;
 
             DebugHelper.Out("Connecting to " + Host, DebugHelper.Type.Info);
