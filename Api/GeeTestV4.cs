@@ -1,16 +1,16 @@
 ﻿using System;
 using Anticaptcha_example.ApiResponse;
-using Anticaptcha_example.Helper;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Anticaptcha_example.Api
 {
-    internal class FunCaptcha : AnticaptchaBase, IAnticaptchaTaskProtocol
+    public class GeeTestV4 : AnticaptchaBase, IAnticaptchaTaskProtocol
     {
         public Uri WebsiteUrl { protected get; set; }
-        public string WebsitePublicKey { protected get; set; }
-        public string ApiJSSubdomain { protected get; set; }
-        public string DataBlob { protected get; set; }
+        public string WebsiteKey { protected get; set; }
+        public string GeetestApiServerSubdomain { protected get; set; }
+        public Dictionary<string, string> initParameters = new Dictionary<string, string>();
         public string ProxyLogin { protected get; set; }
         public string ProxyPassword { protected get; set; }
         public int? ProxyPort { protected get; set; }
@@ -20,21 +20,12 @@ namespace Anticaptcha_example.Api
 
         public override JObject GetPostData()
         {
-            if (ProxyType == null || ProxyPort == null || ProxyPort < 1 || ProxyPort > 65535 ||
-                string.IsNullOrEmpty(ProxyAddress))
+            var postData = new JObject
             {
-                DebugHelper.Out("Proxy data is incorrect!", DebugHelper.Type.Error);
-
-                return null;
-            }
-
-            return new JObject
-            {
-                {"type", "FunCaptchaTask"},
+                {"type", "GeeTestTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
-                {"websitePublicKey", WebsitePublicKey},
-                {"funcaptchaApiJSSubdomain", ApiJSSubdomain},
-                {"data", DataBlob},
+                {"gt", WebsiteKey},
+                {"version", 4},
                 {"proxyType", ProxyType.ToString().ToLower()},
                 {"proxyAddress", ProxyAddress},
                 {"proxyPort", ProxyPort},
@@ -42,6 +33,17 @@ namespace Anticaptcha_example.Api
                 {"proxyPassword", ProxyPassword},
                 {"userAgent", UserAgent}
             };
+
+            if (!string.IsNullOrEmpty(GeetestApiServerSubdomain))
+            {
+                postData["geetestApiServerSubdomain"] = GeetestApiServerSubdomain;
+            }
+            if (initParameters.Count > 0)
+            {
+                postData["initParameters"] = JObject.FromObject(initParameters);
+            }
+
+            return postData;
         }
 
         public TaskResultResponse.SolutionData GetTaskSolution()

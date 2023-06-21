@@ -5,18 +5,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Anticaptcha_example.Api
 {
-    internal class FunCaptcha : AnticaptchaBase, IAnticaptchaTaskProtocol
+    internal class FunCaptchaProxyless : AnticaptchaBase, IAnticaptchaTaskProtocol
     {
         public Uri WebsiteUrl { protected get; set; }
         public string WebsitePublicKey { protected get; set; }
         public string ApiJSSubdomain { protected get; set; }
         public string DataBlob { protected get; set; }
-        public string ProxyLogin { protected get; set; }
-        public string ProxyPassword { protected get; set; }
-        public int? ProxyPort { protected get; set; }
-        public ProxyTypeOption? ProxyType { protected get; set; }
-        public string ProxyAddress { protected get; set; }
-        public string UserAgent { protected get; set; }
 
         public override JObject GetPostData()
         {
@@ -30,17 +24,11 @@ namespace Anticaptcha_example.Api
 
             return new JObject
             {
-                {"type", "FunCaptchaTask"},
+                {"type", "FunCaptchaTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
                 {"websitePublicKey", WebsitePublicKey},
                 {"funcaptchaApiJSSubdomain", ApiJSSubdomain},
-                {"data", DataBlob},
-                {"proxyType", ProxyType.ToString().ToLower()},
-                {"proxyAddress", ProxyAddress},
-                {"proxyPort", ProxyPort},
-                {"proxyLogin", ProxyLogin},
-                {"proxyPassword", ProxyPassword},
-                {"userAgent", UserAgent}
+                {"data", DataBlob}
             };
         }
 

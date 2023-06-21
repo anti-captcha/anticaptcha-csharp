@@ -22,6 +22,7 @@ namespace Anticaptcha_example
             ExampleRecaptcha2();
             ExampleRecaptchaV3Proxyless();
             ExampleFunCaptcha();
+            ExampleFunCaptchaProxyless();
             ExampleGeeTestProxyless();
             ExampleGeeTestV4Proxyless();
 
@@ -148,6 +149,45 @@ namespace Anticaptcha_example
                 DebugHelper.Out("Result: " + api.GetTaskSolution().GRecaptchaResponse, DebugHelper.Type.Success);
         }
 
+
+
+        private static void ExampleGeeTest()
+        {
+            DebugHelper.VerboseMode = true;
+
+            // website key ("gt") and "challenge" for testing you can get here: https://auth.geetest.com/api/init_captcha?time=1561554686474
+            // you need to get a new "challenge" each time
+            var api = new GeeTest()
+            {
+                ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
+                WebsiteUrl = new Uri("http://www.supremenewyork.com"),
+                WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442",
+                WebsiteChallenge = "169acd4a58f2c99770322dfa5270c221",
+                UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
+                // proxy access parameters
+                ProxyType = AnticaptchaBase.ProxyTypeOption.Http,
+                ProxyAddress = "xx.xx.xx.xx",
+                ProxyPort = 8282,
+                ProxyLogin = "123",
+                ProxyPassword = "456"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+            {
+                DebugHelper.Out("Result CHALLENGE: " + api.GetTaskSolution().Challenge, DebugHelper.Type.Success);
+                DebugHelper.Out("Result SECCODE: " + api.GetTaskSolution().Seccode, DebugHelper.Type.Success);
+                DebugHelper.Out("Result VALIDATE: " + api.GetTaskSolution().Validate, DebugHelper.Type.Success);
+            }
+        }
+
         private static void ExampleGeeTestProxyless()
         {
             DebugHelper.VerboseMode = true;
@@ -193,6 +233,46 @@ namespace Anticaptcha_example
                 SoftId = 0,
                 WebsiteUrl = new Uri("http://www.supremenewyork.com"),
                 WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442"
+            };
+
+            api.initParameters.Add("riskType", "slide");
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+            {
+                DebugHelper.Out("Result CaptchaId: " + api.GetTaskSolution().CaptchaId, DebugHelper.Type.Success);
+                DebugHelper.Out("Result LotNumber: " + api.GetTaskSolution().LotNumber, DebugHelper.Type.Success);
+                DebugHelper.Out("Result PassToken: " + api.GetTaskSolution().PassToken, DebugHelper.Type.Success);
+                DebugHelper.Out("Result GenTime: " + api.GetTaskSolution().GenTime, DebugHelper.Type.Success);
+                DebugHelper.Out("Result CaptchaOutput: " + api.GetTaskSolution().CaptchaOutput, DebugHelper.Type.Success);
+            }
+        }
+
+        private static void ExampleGeeTestV4()
+        {
+            DebugHelper.VerboseMode = true;
+
+            // website key ("gt") and "challenge" for testing you can get here: https://auth.geetest.com/api/init_captcha?time=1561554686474
+            // you need to get a new "challenge" each time
+            var api = new GeeTestV4()
+            {
+                ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
+                WebsiteUrl = new Uri("http://www.supremenewyork.com"),
+                WebsiteKey = "b6e21f90a91a3c2d4a31fe84e10d0442",
+                UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
+                // proxy access parameters
+                ProxyType = AnticaptchaBase.ProxyTypeOption.Http,
+                ProxyAddress = "xx.xx.xx.xx",
+                ProxyPort = 8282,
+                ProxyLogin = "123",
+                ProxyPassword = "456"
             };
 
             api.initParameters.Add("riskType", "slide");
@@ -383,6 +463,8 @@ namespace Anticaptcha_example
                 SoftId = 0,
                 WebsiteUrl = new Uri("http://http.myjino.ru/funcaptcha_test/"),
                 WebsitePublicKey = "DE0B0BB7-1EE4-4D70-1853-31B835D4506B",
+                ApiJSSubdomain = "something.arkoselabs.com",
+                DataBlob = "{\"blob\":\"HERE_COMES_THE_blob_VALUE\"}",
                 UserAgent =
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116",
                 // proxy access parameters
@@ -391,6 +473,29 @@ namespace Anticaptcha_example
                 ProxyPort = 8282,
                 ProxyLogin = "123",
                 ProxyPassword = "456"
+            };
+
+            if (!api.CreateTask())
+                DebugHelper.Out("API v2 send failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else if (!api.WaitForResult())
+                DebugHelper.Out("Could not solve the captcha.", DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Result: " + api.GetTaskSolution().Token, DebugHelper.Type.Success);
+        }
+    }
+
+        private static void ExampleFunCaptchaProxyless()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new FunCaptchaProxyless
+            {
+                ClientKey = ClientKey,
+                SoftId = 0,
+                WebsiteUrl = new Uri("http://http.myjino.ru/funcaptcha_test/"),
+                WebsitePublicKey = "DE0B0BB7-1EE4-4D70-1853-31B835D4506B",
+                ApiJSSubdomain = "something.arkoselabs.com",
+                DataBlob = "{\"blob\":\"HERE_COMES_THE_blob_VALUE\"}"
             };
 
             if (!api.CreateTask())
