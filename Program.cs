@@ -12,6 +12,7 @@ namespace Anticaptcha_example
         private static void Main()
         {
             ExampleGetBalance();
+            ExampleGetCreditsBalance();
             ExampleAntiGateTask();
             ExampleImageToText();
             ExampleRecaptcha2EnterpriseProxyless();
@@ -48,6 +49,27 @@ namespace Anticaptcha_example
                 DebugHelper.Out("GetBalance() failed. " + api.ErrorMessage, DebugHelper.Type.Error);
             else
                 DebugHelper.Out("Balance: " + balance, DebugHelper.Type.Success);
+        }
+
+        private static void ExampleGetCreditsBalance()
+        {
+            DebugHelper.VerboseMode = true;
+
+            var api = new ImageToText
+            {
+                ClientKey = ClientKey,
+                // Specify softId to earn 10% commission with your app.
+                // Get your softId here:
+                // https://anti-captcha.com/clients/tools/devcenter
+                SoftId = 0,
+            };
+
+            var credits = api.GetCreditsBalance();
+
+            if (credits == null)
+                DebugHelper.Out("GetCreditsBalance() failed. " + api.ErrorMessage, DebugHelper.Type.Error);
+            else
+                DebugHelper.Out("Credits balance: " + balance, DebugHelper.Type.Success);
         }
 
         private static void ExampleAntiGateTask()

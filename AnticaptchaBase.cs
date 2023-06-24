@@ -229,6 +229,42 @@ namespace Anticaptcha_example
             return balanceResponse.Balance;
         }
 
+        public double? GetCreditsBalance()
+        {
+            var jsonPostData = new JObject();
+            jsonPostData["clientKey"] = ClientKey;
+
+            dynamic postResult = JsonPostRequest(ApiMethod.GetBalance, jsonPostData);
+
+            if (postResult == null || postResult.Equals(false))
+            {
+                DebugHelper.Out("API error", DebugHelper.Type.Error);
+
+                return null;
+            }
+
+            var balanceResponse = new BalanceResponse(postResult);
+
+            if (!balanceResponse.ErrorId.Equals(0))
+            {
+                ErrorMessage = balanceResponse.ErrorDescription;
+
+                DebugHelper.Out(
+                    "API error " + balanceResponse.ErrorId + ": " + balanceResponse.ErrorDescription,
+                    DebugHelper.Type.Error
+                );
+
+                return null;
+            }
+
+            if (balanceResponse.captchaCredits == null)
+            {
+                return 0;
+            }
+
+            return balanceResponse.captchaCredits;
+        }
+
         private enum ApiMethod
         {
             CreateTask,
