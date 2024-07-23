@@ -23,6 +23,7 @@ namespace Anticaptcha_example.Api
             Math = 0;
             MinLength = 0;
             MaxLength = 0;
+            LanguagePool = "en";
         }
 
         public string BodyBase64 { private get; set; }
@@ -56,6 +57,7 @@ namespace Anticaptcha_example.Api
         public int Math { private get; set; }
         public int MinLength { private get; set; }
         public int MaxLength { private get; set; }
+        public int LanguagePool { private get; set; }
 
         public override JObject GetPostData()
         {
@@ -73,7 +75,8 @@ namespace Anticaptcha_example.Api
                 {"numeric", Numeric.Equals(NumericOption.NoRequirements) ? 0 : Numeric.Equals(NumericOption.NumbersOnly) ? 1 : 2},
                 {"math", Math},
                 {"minLength", MinLength},
-                {"maxLength", MaxLength}
+                {"maxLength", MaxLength},
+                {"languagePool", LanguagePool}
             };
         }
 

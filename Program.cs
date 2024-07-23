@@ -325,6 +325,15 @@ namespace Anticaptcha_example
                 // https://anti-captcha.com/clients/tools/devcenter
                 SoftId = 0,
                 FilePath = "captcha.jpg"
+
+                // Additional flags, see https://anti-captcha.com/apidoc/task-types/ImageToTextTask for details
+                // Phrase = false,      // 2 words
+                // Case = false,        // case sensitivity
+                // Numeric = 1,         // numbers only
+                // Math = 1,            // math operation like result of 50+5
+                // MinLength = 1,       // minimum length of solution
+                // MaxLength = 10,      // maximum length
+                // LanguagePool = "en"  // language pool, see docs for available pools
             };
 
             if (!api.CreateTask())
