@@ -9,6 +9,8 @@ namespace Anticaptcha_example.Api
         public Uri WebsiteUrl { protected get; set; }
         public string WebsiteKey { protected get; set; }
         public string Action { protected get; set; }
+        public string CData { protected get; set; }
+        public string ChlPageData { protected get; set; }
 
         public override JObject GetPostData()
         {
@@ -17,7 +19,9 @@ namespace Anticaptcha_example.Api
                 {"type", "TurnstileTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
                 {"websiteKey", WebsiteKey},
-                {"action", Action}
+                {"action", Action},
+                {"cData", CData},
+                {"chlPageData", ChlPageData}
             };
         }
 
