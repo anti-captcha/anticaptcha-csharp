@@ -12,6 +12,8 @@ namespace Anticaptcha_example.Api
         public string Context { protected get; set; }
         public string CaptchaScript { protected get; set; }
         public string ChallengeScript { protected get; set; }
+        public string JsapiScript { protected get; set; }
+        public string WafType { protected get; set; }
 
         public override JObject GetPostData()
         {
@@ -19,11 +21,13 @@ namespace Anticaptcha_example.Api
             {
                 {"type", "AmazonTaskProxyless"},
                 {"websiteURL", WebsiteUrl},
-                {"websiteKey", WebsiteKey},
+                {"websiteKey", WebsiteKey},,
+                {"wafType", WafType}
                 {"iv", Iv},
                 {"context", Context},
                 {"captchaScript", CaptchaScript},
-                {"challengeScript", ChallengeScript}
+                {"challengeScript", ChallengeScript},
+                {"jsapiScript", JsapiScript}
             };
         }
 
