@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Lets the samples run on any newer .NET runtime you happen to have installed -->
+    <RollForward>LatestMajor</RollForward>
+    <RootNamespace>AntiCaptcha.Examples</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/AntiCaptcha/AntiCaptcha.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="*.jpg" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

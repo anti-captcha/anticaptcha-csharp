@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AntiCaptcha</RootNamespace>
+    <AssemblyName>AntiCaptcha</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>AntiCaptchaOfficial</PackageId>
+    <Version>2.0.0</Version>
+    <Authors>Anti-Captcha.com</Authors>
+    <Company>ANTICAPTCHA DEVELOPMENT LP</Company>
+    <Product>Anti-Captcha.com API client</Product>
+    <Title>Official Anti-Captcha.com API client</Title>
+    <Description>Official Anti-Captcha.com .NET client for solving image captchas, Recaptcha V2/V3 (Enterprise and non-Enterprise), hCaptcha, FunCaptcha (Arkose Labs), GeeTest v3/v4, Cloudflare Turnstile, Amazon WAF, Prosopo, Friendly Captcha, Altcha and AntiGate custom tasks.</Description>
+    <PackageTags>anticaptcha;captcha;recaptcha;recaptchav2;recaptchav3;recaptcha-enterprise;hcaptcha;funcaptcha;arkoselabs;geetest;turnstile;cloudflare;amazon-waf;prosopo;friendly-captcha;altcha;captcha-solver;ocr</PackageTags>
+    <PackageProjectUrl>https://github.com/anti-captcha/anticaptcha-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anti-captcha/anticaptcha-csharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright (c) ANTICAPTCHA DEVELOPMENT LP</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
