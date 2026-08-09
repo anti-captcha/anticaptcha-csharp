@@ -506,10 +506,10 @@ var api = new AltchaProxyless
     WebsiteUrl = new Uri("https://www.website.com/"),
 
     // Option 1: use the challenge URL (use one of the options!)
-    ChallengeUrl = "/some/path/to/challenge/url",
+    ChallengeURL = "/some/path/to/challenge/url",
 
     // Option 2: use the challenge JSON
-    // ChallengeJson = "{\"algorithm\":\"SHA-256\",\"challenge\":\"1a40f7ba3393f9513016879de41c7221f14e563856de2f647233a00accf9c28b\",\"salt\":\"0887f273d79df143355b9e5f\",\"signature\":\"1de2bbf282420aef6ca0a84c38c85e2b1e40023d28bef72278d735555a8f47fb\"}",
+    // ChallengeJSON = "{\"algorithm\":\"SHA-256\",\"challenge\":\"1a40f7ba3393f9513016879de41c7221f14e563856de2f647233a00accf9c28b\",\"salt\":\"0887f273d79df143355b9e5f\",\"signature\":\"1de2bbf282420aef6ca0a84c38c85e2b1e40023d28bef72278d735555a8f47fb\"}",
 };
 
 var solution = api.Solve();

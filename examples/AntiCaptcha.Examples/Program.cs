@@ -400,8 +400,8 @@ namespace AntiCaptcha.Examples
                 ClientKey = ClientKey,
                 SoftId = SoftId,
                 WebsiteUrl = new Uri("https://www.website.com/"),
-                // Use ChallengeUrl or ChallengeJson, not both
-                ChallengeUrl = "/some/path/to/challenge/url"
+                // Use ChallengeURL or ChallengeJson, not both
+                ChallengeURL = "/some/path/to/challenge/url"
                 // ChallengeJson = "{\"algorithm\":\"SHA-256\",\"challenge\":\"...\"}"
             };
 

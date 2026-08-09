@@ -264,11 +264,10 @@ namespace AntiCaptcha
         /// https://anti-captcha.com/apidoc/task-types conventions. Returns false when the
         /// proxy is not configured correctly.
         /// </summary>
-        protected bool AddProxyData(JObject postData, ProxyTypeOption? proxyType, string proxyAddress,
+        protected bool AddProxyData(JObject postData, ProxyTypeOption proxyType, string proxyAddress,
             int? proxyPort, string proxyLogin, string proxyPassword)
         {
-            if (proxyType == null || proxyPort == null || proxyPort < 1 || proxyPort > 65535 ||
-                string.IsNullOrEmpty(proxyAddress))
+            if (proxyPort == null || proxyPort < 1 || proxyPort > 65535 || string.IsNullOrEmpty(proxyAddress))
             {
                 Fail("Proxy data is incorrect!");
 

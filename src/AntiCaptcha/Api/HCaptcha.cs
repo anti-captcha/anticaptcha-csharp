@@ -8,7 +8,7 @@ namespace AntiCaptcha.Api
     /// </summary>
     public class HCaptcha : HCaptchaProxyless
     {
-        public ProxyTypeOption? ProxyType { get; set; }
+        public ProxyTypeOption ProxyType { get; set; } = ProxyTypeOption.Http;
         public string ProxyAddress { get; set; }
         public int? ProxyPort { get; set; }
         public string ProxyLogin { get; set; }

@@ -26,7 +26,7 @@ namespace AntiCaptcha.Api
         /// <summary>Domains you want the cookies and localStorage of.</summary>
         public List<string> DomainsOfInterest { get; } = new List<string>();
 
-        public ProxyTypeOption? ProxyType { get; set; }
+        public ProxyTypeOption ProxyType { get; set; } = ProxyTypeOption.Http;
         public string ProxyAddress { get; set; }
         public int? ProxyPort { get; set; }
         public string ProxyLogin { get; set; }
@@ -54,8 +54,7 @@ namespace AntiCaptcha.Api
             // The proxy is optional for AntiGate tasks, but once an address is given the
             // whole set has to be valid.
             if (!string.IsNullOrEmpty(ProxyAddress) &&
-                !AddProxyData(postData, ProxyType ?? ProxyTypeOption.Http, ProxyAddress, ProxyPort, ProxyLogin,
-                    ProxyPassword))
+                !AddProxyData(postData, ProxyType, ProxyAddress, ProxyPort, ProxyLogin, ProxyPassword))
             {
                 return null;
             }

@@ -15,20 +15,20 @@ namespace AntiCaptcha.Api
         public Uri WebsiteUrl { get; set; }
 
         /// <summary>
-        /// URL the challenge is fetched from. Provide this or <see cref="ChallengeJson" />.
+        /// URL the challenge is fetched from. Provide this or <see cref="ChallengeJSON" />.
         /// </summary>
-        public string ChallengeUrl { get; set; }
+        public string ChallengeURL { get; set; }
 
         /// <summary>
-        /// The challenge itself as a JSON string. Provide this or <see cref="ChallengeUrl" />.
+        /// The challenge itself as a JSON string. Provide this or <see cref="ChallengeURL" />.
         /// </summary>
-        public string ChallengeJson { get; set; }
+        public string ChallengeJSON { get; set; }
 
         public override JObject GetPostData()
         {
-            if (string.IsNullOrEmpty(ChallengeUrl) && string.IsNullOrEmpty(ChallengeJson))
+            if (string.IsNullOrEmpty(ChallengeURL) && string.IsNullOrEmpty(ChallengeJSON))
             {
-                DebugHelper.Out("Set either ChallengeUrl or ChallengeJson", DebugHelper.Type.Error);
+                DebugHelper.Out("Set either ChallengeURL or ChallengeJSON", DebugHelper.Type.Error);
 
                 return null;
             }
@@ -39,8 +39,8 @@ namespace AntiCaptcha.Api
                 ["websiteURL"] = WebsiteUrl?.ToString()
             };
 
-            SetIfNotEmpty(postData, "challengeURL", ChallengeUrl);
-            SetIfNotEmpty(postData, "challengeJSON", ChallengeJson);
+            SetIfNotEmpty(postData, "challengeURL", ChallengeURL);
+            SetIfNotEmpty(postData, "challengeJSON", ChallengeJSON);
 
             return postData;
         }

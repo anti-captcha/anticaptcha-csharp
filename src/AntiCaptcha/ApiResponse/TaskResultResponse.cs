@@ -144,6 +144,7 @@ namespace AntiCaptcha.ApiResponse
                 Fingerprint = JsonHelper.ExtractObject(solution, "fingerprint");
                 Answers = JsonHelper.ExtractObject(solution, "answers");
                 Coordinates = JsonHelper.ExtractArray(solution, "coordinates");
+                LastRequestHeaders = JsonHelper.ExtractArray(solution, "lastRequestHeaders");
 
                 var cellNumbers = JsonHelper.ExtractArray(solution, "cellNumbers");
 
@@ -173,7 +174,7 @@ namespace AntiCaptcha.ApiResponse
             /// <summary>Image captcha.</summary>
             public string Text { get; }
 
-            /// <summary>AntiGate tasks.</summary>
+            /// <summary>AntiGate and AntiBotCookie tasks.</summary>
             public string Url { get; }
 
             /// <summary>FunCaptcha, Turnstile, Prosopo, Friendly Captcha, Altcha, Amazon WAF.</summary>
@@ -206,14 +207,17 @@ namespace AntiCaptcha.ApiResponse
             /// <summary>Amazon WAF: the domain the aws-waf-token cookie belongs to.</summary>
             public string Domain { get; }
 
-            /// <summary>AntiGate tasks.</summary>
+            /// <summary>AntiGate and AntiBotCookie tasks.</summary>
             public JObject Cookies { get; }
 
-            /// <summary>AntiGate tasks.</summary>
+            /// <summary>AntiGate and AntiBotCookie tasks.</summary>
             public JObject LocalStorage { get; }
 
-            /// <summary>AntiGate tasks.</summary>
+            /// <summary>AntiGate and AntiBotCookie tasks.</summary>
             public JObject Fingerprint { get; }
+
+            /// <summary>AntiBotCookie tasks: headers the worker's browser sent last.</summary>
+            public JArray LastRequestHeaders { get; }
 
             /// <summary>Custom captcha tasks.</summary>
             public JObject Answers { get; }

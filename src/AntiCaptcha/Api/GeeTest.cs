@@ -8,7 +8,7 @@ namespace AntiCaptcha.Api
     /// </summary>
     public class GeeTest : GeeTestProxyless
     {
-        public ProxyTypeOption? ProxyType { get; set; }
+        public ProxyTypeOption ProxyType { get; set; } = ProxyTypeOption.Http;
         public string ProxyAddress { get; set; }
         public int? ProxyPort { get; set; }
         public string ProxyLogin { get; set; }
